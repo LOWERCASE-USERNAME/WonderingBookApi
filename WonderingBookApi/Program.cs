@@ -1,4 +1,7 @@
 
+using WonderingBookApi.Mapping;
+using WonderingBookApi.Services;
+
 namespace WonderingBookApi
 {
     public class Program
@@ -8,6 +11,8 @@ namespace WonderingBookApi
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddSingleton<BookService>();
+            builder.Services.AddAutoMapper(typeof(BookProfile));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
