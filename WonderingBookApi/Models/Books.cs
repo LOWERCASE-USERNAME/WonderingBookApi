@@ -1,7 +1,10 @@
-﻿namespace WonderingBookApi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WonderingBookApi.Models
 {
     public class Books
     {
+        [Key]
         public string Id { get; set; }
         public string Title { get; set; }
         public string Authors { get; set; }
