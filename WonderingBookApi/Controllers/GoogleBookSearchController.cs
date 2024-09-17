@@ -10,11 +10,11 @@ namespace WonderingBookApi.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class BookController : ControllerBase
+    public class GoogleBookSearchController : ControllerBase
     {
-        private readonly BookService _bookService;
+        private readonly GoogleBookSearchService _bookService;
 
-        public BookController(BookService bookService)
+        public GoogleBookSearchController(GoogleBookSearchService bookService)
         {
             _bookService = bookService;
         }
