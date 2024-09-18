@@ -9,12 +9,12 @@ using Google.Apis.Books.v1.Data;
 
 namespace WonderingBookApi.Services
 {
-    public class BookService
+    public class GoogleBookSearchService
     {
         private readonly BooksService _booksService;
         private readonly IMapper _mapper;
 
-        public BookService(IMapper mapper)
+        public GoogleBookSearchService(IMapper mapper)
         {
             _booksService = new BooksService(new BaseClientService.Initializer
             {

@@ -1,21 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WonderingBookApi.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
-        public int UserId { get; set; }
-        [Required]
-        public string Email { get; set; }
-        [Required]
-        public string PasswordHash { get; set; }
-        [Required]
-        public string Username { get; set; }
-        public string ProfileImage { get; set; }
-        [Required]
-        public DateTime DateCreated { get; set; }
+        public string Fullname { get; set; }
 
+        [Column(TypeName = "datetime")]
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        [Column(TypeName = "datetime")]
+        public DateTime ModifiedAt { get; set; } = DateTime.Now;
+        [Column(TypeName = "datetime")]
+        public DateTime LastActiveAt { get; set; } = DateTime.Now;
+        public bool IsAdmin { get; set; } = false;
         // Navigation properties
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<SavedIdea> SavedIdeas { get; set; }
