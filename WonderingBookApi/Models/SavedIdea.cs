@@ -9,9 +9,9 @@ namespace WonderingBookApi.Models
         [Required]
         public int UserId { get; set; }
         [Required]
-        public int ArticleId { get; set; }
+        public int IdeaCardId { get; set; }
         // Navigation properties
         public virtual User User { get; set; }
-        public virtual Article Article { get; set; }
+        public virtual IdeaCard IdeaCard { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
 using WonderingBookApi.Mapping;
+using WonderingBookApi.Models;
 using WonderingBookApi.Services;
 
 namespace WonderingBookApi
@@ -9,6 +11,10 @@ namespace WonderingBookApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Register ApplicationDbContext with connection string
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Add services to the container.
             builder.Services.AddSingleton<BookService>();
