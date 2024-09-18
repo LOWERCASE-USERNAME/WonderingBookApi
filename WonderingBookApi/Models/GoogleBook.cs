@@ -2,7 +2,7 @@
 
 namespace WonderingBookApi.Models
 {
-    public class Books
+    public class GoogleBook
     {
         [Key]
         public string Id { get; set; }
@@ -14,7 +14,5 @@ namespace WonderingBookApi.Models
         public string? ISBN { get; set; }
         public int? PageCount { get; set; }
         public string? ImageLink { get; set; }
-        // Navigation property
-        public virtual ICollection<Article> Articles { get; set; }
     }
 }

@@ -24,15 +24,15 @@ namespace WonderingBookApi.Services
             _mapper = mapper;
         }
 
-        public async Task<Books> GetBookAsync(string id)
+        public async Task<GoogleBook> GetBookAsync(string id)
         {
             var request = _booksService.Volumes.Get(id);
             var volume = await request.ExecuteAsync();
 
-            return _mapper.Map<Books>(volume);
+            return _mapper.Map<GoogleBook>(volume);
         }
 
-        public async Task<IEnumerable<Books>> SearchBooksAsync(string query, int maxResults, int startIndex, string langRestrict)
+        public async Task<IEnumerable<GoogleBook>> SearchBooksAsync(string query, int maxResults, int startIndex, string langRestrict)
         {
             var request = _booksService.Volumes.List(query);
             request.MaxResults = maxResults;
@@ -47,10 +47,10 @@ namespace WonderingBookApi.Services
                 throw new Exception("Error happens when trying to retrieve the volumes from API");
             }
 
-            return _mapper.Map<IEnumerable<Books>>(volumes.Items);
+            return _mapper.Map<IEnumerable<GoogleBook>>(volumes.Items);
         }
 
-        public async Task<IEnumerable<Books>> SearchBooksByISBNAsync(string isbn, int maxResults, int startIndex, string langRestrict)
+        public async Task<IEnumerable<GoogleBook>> SearchBooksByISBNAsync(string isbn, int maxResults, int startIndex, string langRestrict)
         {
             var request = _booksService.Volumes.List($"isbn:{isbn}");
             request.MaxResults = maxResults;
@@ -60,10 +60,10 @@ namespace WonderingBookApi.Services
 
             var volumes = await request.ExecuteAsync();
 
-            return _mapper.Map<IEnumerable<Books>>(volumes.Items);
+            return _mapper.Map<IEnumerable<GoogleBook>>(volumes.Items);
         }
 
-        public async Task<IEnumerable<Books>> SearchBooksByAuthorAsync(string author, int maxResults, int startIndex, string langRestrict)
+        public async Task<IEnumerable<GoogleBook>> SearchBooksByAuthorAsync(string author, int maxResults, int startIndex, string langRestrict)
         {
             var request = _booksService.Volumes.List($"inauthor:{author}");
             request.MaxResults = maxResults;
@@ -73,10 +73,10 @@ namespace WonderingBookApi.Services
 
             var volumes = await request.ExecuteAsync();
 
-            return _mapper.Map<IEnumerable<Books>>(volumes.Items);
+            return _mapper.Map<IEnumerable<GoogleBook>>(volumes.Items);
         }
 
-        public async Task<IEnumerable<Books>> SearchBooksByTitleAsync(string title, int maxResults, int startIndex, string langRestrict)
+        public async Task<IEnumerable<GoogleBook>> SearchBooksByTitleAsync(string title, int maxResults, int startIndex, string langRestrict)
         {
             var request = _booksService.Volumes.List($"intitle:{title}");
             request.MaxResults = maxResults;
@@ -86,7 +86,7 @@ namespace WonderingBookApi.Services
             
             var volumes = await request.ExecuteAsync();
 
-            return _mapper.Map<IEnumerable<Books>>(volumes.Items);
+            return _mapper.Map<IEnumerable<GoogleBook>>(volumes.Items);
         }
     }
 }

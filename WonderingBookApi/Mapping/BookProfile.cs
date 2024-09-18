@@ -7,7 +7,7 @@ namespace WonderingBookApi.Mapping
     public class BookProfile : Profile
     {
         public BookProfile() {
-            CreateMap<Volume, Books>()
+            CreateMap<Volume, GoogleBook>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.VolumeInfo.Title))
                 .ForMember(dest => dest.Authors, opt => opt.MapFrom(src => string.Join(", ", src.VolumeInfo.Authors)))

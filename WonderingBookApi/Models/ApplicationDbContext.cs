@@ -20,6 +20,7 @@ namespace WonderingBookApi.Models
 
         }
 
+        public DbSet<Book> Books { get; set; }
         public DbSet<Article> Articles { get; set; }
         public DbSet<ArticleTopic> ArticleTopics { get; set; }
         public DbSet<IdeaCard> IdeaCards { get; set; }

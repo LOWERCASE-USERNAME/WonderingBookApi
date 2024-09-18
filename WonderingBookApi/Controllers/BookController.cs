@@ -20,7 +20,7 @@ namespace WonderingBookApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Books>> GetBook(string id)
+        public async Task<ActionResult<GoogleBook>> GetBook(string id)
         {
             var book = await _bookService.GetBookAsync(id);
 
@@ -32,28 +32,28 @@ namespace WonderingBookApi.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<Books>>> SearchBooks([FromQuery] string query, [FromQuery] int maxResults = 10, [FromQuery]int startIndex = 0, [FromQuery]string langRestrict = "en")
+        public async Task<ActionResult<IEnumerable<GoogleBook>>> SearchBooks([FromQuery] string query, [FromQuery] int maxResults = 10, [FromQuery]int startIndex = 0, [FromQuery]string langRestrict = "en")
         {
             var books = await _bookService.SearchBooksAsync(query, maxResults, startIndex, langRestrict);
             return Ok(books);
         }
 
         [HttpGet("searchByTitle")]
-        public async Task<ActionResult<IEnumerable<Books>>> SearchBooksByTitle([FromQuery] string title, [FromQuery] int maxResults = 10, [FromQuery] int startIndex = 0, [FromQuery] string langRestrict = "en")
+        public async Task<ActionResult<IEnumerable<GoogleBook>>> SearchBooksByTitle([FromQuery] string title, [FromQuery] int maxResults = 10, [FromQuery] int startIndex = 0, [FromQuery] string langRestrict = "en")
         {
             var books = await _bookService.SearchBooksByTitleAsync(title, maxResults, startIndex, langRestrict);
             return Ok(books);
         }
 
         [HttpGet("searchByAuthor")]
-        public async Task<ActionResult<IEnumerable<Books>>> SearchBooksByAuthor([FromQuery] string author, [FromQuery] int maxResults = 10, [FromQuery] int startIndex = 0, [FromQuery] string langRestrict = "en")
+        public async Task<ActionResult<IEnumerable<GoogleBook>>> SearchBooksByAuthor([FromQuery] string author, [FromQuery] int maxResults = 10, [FromQuery] int startIndex = 0, [FromQuery] string langRestrict = "en")
         {
             var books = await _bookService.SearchBooksByAuthorAsync(author, maxResults, startIndex, langRestrict);
             return Ok(books);
         }
 
         [HttpGet("searchByISBN")]
-        public async Task<ActionResult<IEnumerable<Books>>> SearchBooksByISBN([FromQuery] string isbn, [FromQuery] int maxResults = 10, [FromQuery] int startIndex = 0, [FromQuery] string langRestrict = "en")
+        public async Task<ActionResult<IEnumerable<GoogleBook>>> SearchBooksByISBN([FromQuery] string isbn, [FromQuery] int maxResults = 10, [FromQuery] int startIndex = 0, [FromQuery] string langRestrict = "en")
         {
             var books = await _bookService.SearchBooksByISBNAsync(isbn, maxResults, startIndex, langRestrict);
             return Ok(books);

@@ -16,7 +16,7 @@ namespace WonderingBookApi.Models
 
         // Navigation properties
         public virtual User User { get; set; }
-        public virtual Books Book { get; set; }
+        public virtual Book Book { get; set; }
         public virtual ICollection<ArticleTopic> ArticleTopics { get; set; }
         public virtual ICollection<IdeaCard> IdeaCards { get; set; }
     }
