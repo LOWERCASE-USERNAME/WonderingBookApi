@@ -7,7 +7,7 @@ namespace WonderingBookApi.Models
         [Key]
         public int SavedIdeaId { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         public int IdeaCardId { get; set; }
         // Navigation properties

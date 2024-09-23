@@ -7,7 +7,7 @@ namespace WonderingBookApi.Models
         [Key]
         public int ArticleId { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         public string Title { get; set; }
         public string AuthorNotes { get; set; }
