@@ -7,6 +7,7 @@ using WonderingBookApi.Data;
 using WonderingBookApi.Mapping;
 using WonderingBookApi.Models;
 using WonderingBookApi.Services;
+using WonderingBookApi.Services.Implementation;
 
 namespace WonderingBookApi
 {
@@ -21,8 +22,11 @@ namespace WonderingBookApi
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Add services to the container.
-            builder.Services.AddSingleton<GoogleBookSearchService>();
             builder.Services.AddAutoMapper(typeof(BookProfile));
+            builder.Services.AddAutoMapper(typeof(ArticleProfile));
+
+            builder.Services.AddSingleton<GoogleBookSearchService>();
+            builder.Services.AddScoped<IArticleService, ArticleService>();
 
             builder.Services.AddAuthentication(options =>
             {
