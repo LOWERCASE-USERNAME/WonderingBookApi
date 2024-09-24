@@ -10,6 +10,8 @@ namespace WonderingBookApi.Mapping
         {
             // Map from source to dest
             CreateMap<CreateArticleDTO, Article>();
+            CreateMap<UpdateArticleDTO, Article>();
+            CreateMap<Article, UpdateArticleDTO>();
         }
         
     }
