@@ -157,11 +157,9 @@ namespace WonderingBookApi.Data.Migrations
 
             modelBuilder.Entity("WonderingBookApi.Models.Article", b =>
                 {
-                    b.Property<int>("ArticleId")
+                    b.Property<Guid>("ArticleId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticleId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AuthorNotes")
                         .IsRequired()
@@ -192,14 +190,12 @@ namespace WonderingBookApi.Data.Migrations
 
             modelBuilder.Entity("WonderingBookApi.Models.ArticleTopic", b =>
                 {
-                    b.Property<int>("ArticleTopicId")
+                    b.Property<Guid>("ArticleTopicId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticleTopicId"));
-
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TopicId")
                         .HasColumnType("int");
@@ -251,14 +247,12 @@ namespace WonderingBookApi.Data.Migrations
 
             modelBuilder.Entity("WonderingBookApi.Models.IdeaCard", b =>
                 {
-                    b.Property<int>("IdeaCardId")
+                    b.Property<Guid>("IdeaCardId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdeaCardId"));
-
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CardType")
                         .HasColumnType("int");
@@ -284,14 +278,12 @@ namespace WonderingBookApi.Data.Migrations
 
             modelBuilder.Entity("WonderingBookApi.Models.SavedIdea", b =>
                 {
-                    b.Property<int>("SavedIdeaId")
+                    b.Property<Guid>("SavedIdeaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SavedIdeaId"));
-
-                    b.Property<int>("IdeaCardId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IdeaCardId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId")
                         .IsRequired()

@@ -15,13 +15,14 @@ namespace WonderingBookApi.Services.Implementation
 
         public async Task<Article> CreateArticleAsync(Article newArticle)
         {
+            newArticle.ArticleId = Guid.NewGuid();
             newArticle.DateCreated = DateTime.UtcNow;
             _context.Articles.Add(newArticle);
             await _context.SaveChangesAsync();
             return newArticle;
         }
 
-        public async Task<Article> GetArticleByIdAsync(int id)
+        public async Task<Article> GetArticleByIdAsync(Guid id)
         {
             var article = await _context.Articles.FirstOrDefaultAsync(a => a.ArticleId == id);
             return article;
@@ -32,7 +33,7 @@ namespace WonderingBookApi.Services.Implementation
             return await _context.Articles.ToListAsync();
         }
 
-        public async Task UpdateArticleAsync(int id, Article updatedArticle)
+        public async Task UpdateArticleAsync(Article updatedArticle)
         {
             if (updatedArticle == null)
                 throw new ArgumentNullException(nameof(updatedArticle));

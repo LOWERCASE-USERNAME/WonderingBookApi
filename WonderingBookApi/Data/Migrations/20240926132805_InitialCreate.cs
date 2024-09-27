@@ -197,23 +197,22 @@ namespace WonderingBookApi.Data.Migrations
                 name: "Articles",
                 columns: table => new
                 {
-                    ArticleId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ArticleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AuthorNotes = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BookId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Articles", x => x.ArticleId);
                     table.ForeignKey(
-                        name: "FK_Articles_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Articles_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Articles_Books_BookId",
                         column: x => x.BookId,
@@ -225,9 +224,8 @@ namespace WonderingBookApi.Data.Migrations
                 name: "ArticleTopics",
                 columns: table => new
                 {
-                    ArticleTopicId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ArticleId = table.Column<int>(type: "int", nullable: false),
+                    ArticleTopicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ArticleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TopicId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -251,9 +249,8 @@ namespace WonderingBookApi.Data.Migrations
                 name: "IdeaCards",
                 columns: table => new
                 {
-                    IdeaCardId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ArticleId = table.Column<int>(type: "int", nullable: false),
+                    IdeaCardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ArticleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CardType = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -274,20 +271,19 @@ namespace WonderingBookApi.Data.Migrations
                 name: "SavedIdeas",
                 columns: table => new
                 {
-                    SavedIdeaId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    IdeaCardId = table.Column<int>(type: "int", nullable: false),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    SavedIdeaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IdeaCardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SavedIdeas", x => x.SavedIdeaId);
                     table.ForeignKey(
-                        name: "FK_SavedIdeas_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_SavedIdeas_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SavedIdeas_IdeaCards_IdeaCardId",
                         column: x => x.IdeaCardId,
@@ -302,9 +298,9 @@ namespace WonderingBookApi.Data.Migrations
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_UserId1",
+                name: "IX_Articles_UserId",
                 table: "Articles",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ArticleTopics_ArticleId",
@@ -366,9 +362,9 @@ namespace WonderingBookApi.Data.Migrations
                 column: "IdeaCardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SavedIdeas_UserId1",
+                name: "IX_SavedIdeas_UserId",
                 table: "SavedIdeas",
-                column: "UserId1");
+                column: "UserId");
         }
 
         /// <inheritdoc />

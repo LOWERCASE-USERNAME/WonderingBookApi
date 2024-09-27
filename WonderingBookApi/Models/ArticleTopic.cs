@@ -5,9 +5,9 @@ namespace WonderingBookApi.Models
     public class ArticleTopic
     {
         [Key]
-        public int ArticleTopicId { get; set; }
+        public Guid ArticleTopicId { get; set; }
         [Required]
-        public int ArticleId { get; set; }
+        public Guid ArticleId { get; set; }
         [Required]
         public int TopicId { get; set; }
 

@@ -31,7 +31,7 @@ namespace WonderingBookApi.Controllers
 
         // GET api/<ArticlesController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetArticle(int id)
+        public async Task<IActionResult> GetArticle(Guid id)
         {
             var article = await _articleService.GetArticleByIdAsync(id);
             if (article == null)
@@ -54,7 +54,7 @@ namespace WonderingBookApi.Controllers
 
         // PUT api/<ArticlesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateArticle(int id, [FromBody] UpdateArticleDTO updateArticle)
+        public async Task<IActionResult> UpdateArticle(Guid id, [FromBody] UpdateArticleDTO updateArticle)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -66,7 +66,7 @@ namespace WonderingBookApi.Controllers
                     return NotFound();
 
                 _mapper.Map(updateArticle, article);
-                await _articleService.UpdateArticleAsync(id, article);
+                await _articleService.UpdateArticleAsync(article);
             }
             catch (InvalidOperationException ex)
             {

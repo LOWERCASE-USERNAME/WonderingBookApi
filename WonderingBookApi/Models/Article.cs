@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WonderingBookApi.Models
 {
     public class Article
     {
         [Key]
-        public int ArticleId { get; set; }
+        public Guid ArticleId { get; set; }
         [Required]
         public string UserId { get; set; }
         [Required]
