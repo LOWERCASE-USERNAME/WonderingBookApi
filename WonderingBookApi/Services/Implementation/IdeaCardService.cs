@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WonderingBookApi.Data;
+using WonderingBookApi.DTOs.IdeaCard;
 using WonderingBookApi.Models;
 
 namespace WonderingBookApi.Services.Implementation
@@ -7,11 +8,37 @@ namespace WonderingBookApi.Services.Implementation
     public class IdeaCardService : IIdeaCardService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHandleFirebaseService _handleFirebaseService;
 
-        public IdeaCardService(ApplicationDbContext context)
+        public IdeaCardService(ApplicationDbContext context, IHandleFirebaseService handleFirebaseService)
         {
             _context = context;
+            _handleFirebaseService = handleFirebaseService;
         }
+
+        public async Task<IEnumerable<IdeaCard>> BulkCreateIdeaCardAsync(BulkCreateIdeaCardsDTO ideaCards)
+        {
+            var listIdeaCards = new List<IdeaCard>();
+            foreach (var cardDTO in ideaCards.IdeaCards)
+            {
+                var ideaCard = new IdeaCard
+                {
+                    ArticleId = cardDTO.ArticleId,
+                    CardType = cardDTO.CardType,
+                    Title = cardDTO.Title,
+                    Content = cardDTO.Content,
+                    Order = cardDTO.Order
+                };
+                ideaCard.IdeaCardId = Guid.NewGuid();
+                ideaCard.Image = await _handleFirebaseService.UploadImageAsync(cardDTO.Image, ideaCard.IdeaCardId);
+                _context.IdeaCards.Add(ideaCard);
+                listIdeaCards.Add(ideaCard);
+            }
+
+            await _context.SaveChangesAsync();
+            return listIdeaCards;
+        }
+
         public async Task<IdeaCard> CreateIdeaCardAsync(IdeaCard ideaCard)
         {
             _context.IdeaCards.Add(ideaCard);

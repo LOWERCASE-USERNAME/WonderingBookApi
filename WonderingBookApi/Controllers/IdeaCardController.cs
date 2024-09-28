@@ -45,7 +45,7 @@ namespace WonderingBookApi.Controllers
 
         // POST api/<IdeaCardController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm] CreateIdeaCardDTO ideaCardDTO)
+        public async Task<IActionResult> Create([FromForm] CreateIdeaCardDTO ideaCardDTO)
         {
             if (ideaCardDTO == null)
             {
@@ -76,6 +76,19 @@ namespace WonderingBookApi.Controllers
                 // Handle any errors during the creation process
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
+
+        // POST api/<IdeaCardController>
+        [HttpPost("bulk-create")]
+        public async Task<IActionResult> BulkCreate([FromForm] BulkCreateIdeaCardsDTO ideaCardsDTO)
+        {
+            if (ideaCardsDTO.IdeaCards == null || !ideaCardsDTO.IdeaCards.Any())
+            {
+                return BadRequest("IdeaCard data is required.");
+            }
+
+            var newIdeaCards = await _ideaCardService.BulkCreateIdeaCardAsync(ideaCardsDTO);
+            return Ok(newIdeaCards);
         }
 
         // PUT api/<IdeaCardController>/5
