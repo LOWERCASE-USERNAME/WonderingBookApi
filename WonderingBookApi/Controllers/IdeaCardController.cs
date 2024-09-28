@@ -60,7 +60,8 @@ namespace WonderingBookApi.Controllers
                     ArticleId = ideaCardDTO.ArticleId,
                     CardType = ideaCardDTO.CardType,
                     Title = ideaCardDTO.Title,
-                    Content = ideaCardDTO.Content
+                    Content = ideaCardDTO.Content,
+                    Order = ideaCardDTO.Order
                 };
                 newIdeaCard.IdeaCardId = Guid.NewGuid();
                 newIdeaCard.Image = await _handleFirebaseService.UploadImageAsync(ideaCardDTO.Image, newIdeaCard.IdeaCardId);
