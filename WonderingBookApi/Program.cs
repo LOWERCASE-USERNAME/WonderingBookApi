@@ -1,4 +1,6 @@
 
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +9,7 @@ using WonderingBookApi.Data;
 using WonderingBookApi.Mapping;
 using WonderingBookApi.Models;
 using WonderingBookApi.Services;
+using WonderingBookApi.Services.Implementation;
 
 namespace WonderingBookApi
 {
@@ -20,9 +23,24 @@ namespace WonderingBookApi
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Load Firebase credentials from the JSON file
+            GoogleCredential googleCredential = GoogleCredential.FromFile("exe201-8a294-firebase-adminsdk-tq9kz-d09e57ffe3.json");
+
+            // Use the credentials to create a Storage client
+            StorageClient storageClient = StorageClient.Create(googleCredential);
+
+            // Register the storage client for dependency injection
+            builder.Services.AddSingleton(storageClient);
+
             // Add services to the container.
-            builder.Services.AddSingleton<GoogleBookSearchService>();
             builder.Services.AddAutoMapper(typeof(BookProfile));
+            builder.Services.AddAutoMapper(typeof(ArticleProfile));
+
+            builder.Services.AddSingleton<GoogleBookSearchService>();
+            builder.Services.AddScoped<IArticleService, ArticleService>();
+            builder.Services.AddScoped<IIdeaCardService, IdeaCardService>();
+            builder.Services.AddScoped<IHandleFirebaseService, HandleFirebaseService>();
+
 
             builder.Services.AddAuthentication(options =>
             {
