@@ -145,7 +145,7 @@ namespace WonderingBookApi.Controllers
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(14400),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

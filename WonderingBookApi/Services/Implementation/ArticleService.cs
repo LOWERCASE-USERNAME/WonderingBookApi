@@ -48,5 +48,11 @@ namespace WonderingBookApi.Services.Implementation
                 throw;
             }
         }
+
+        public async Task<IEnumerable<Article>> GetArticlesByUserIdAsync(Guid userId)
+        {
+            var article = await _context.Articles.Where(a => a.UserId == userId.ToString()).ToListAsync();
+            return article;
+        }
     }
 }
