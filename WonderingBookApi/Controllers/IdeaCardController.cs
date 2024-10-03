@@ -25,7 +25,7 @@ namespace WonderingBookApi.Controllers
             _mapper = mapper;
         }
         // GET: api/<IdeaCardController>
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<IActionResult> Get()
         {
             var ideaCard = await _ideaCardService.GetAllIdeaCardsAsync();
@@ -41,6 +41,18 @@ namespace WonderingBookApi.Controllers
                 return NotFound();
 
             return Ok(ideaCard);
+        }
+
+        [HttpGet("get-by-article/{articleId}")]
+        public async Task<IActionResult> GetCardByArticle(Guid articleId)
+        {
+            // Retrieve the IdeaCard using IdeaCardService
+            var ideaCards = await _ideaCardService.GetIdeaCardsByArticleAsync(articleId);
+            if (ideaCards == null)
+            {
+                return NotFound("IdeaCard not found");
+            }
+            return Ok(ideaCards);
         }
 
         // POST api/<IdeaCardController>

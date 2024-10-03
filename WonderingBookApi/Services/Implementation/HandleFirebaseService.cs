@@ -22,26 +22,37 @@ namespace WonderingBookApi.Services.Implementation
 
             string fileName = $"{fileId}_{image.FileName}";
 
-            // Save the file to Firebase Storage
             using (var memoryStream = new MemoryStream())
             {
                 await image.CopyToAsync(memoryStream);
                 memoryStream.Seek(0, SeekOrigin.Begin);
 
                 // Upload to Firebase Storage
-                await _storageClient.UploadObjectAsync(_bucketName, $"images/{fileName}", null, memoryStream);
+                var obj = await _storageClient.UploadObjectAsync(_bucketName, $"images/{fileName}", image.ContentType, memoryStream);
+
+                // Set the uploaded file to be publicly readable
+                var acl = new[] { PredefinedObjectAcl.PublicRead };
+                await _storageClient.UpdateObjectAsync(obj, new UpdateObjectOptions { PredefinedAcl = PredefinedObjectAcl.PublicRead });
             }
 
             // Return the filename
-            return GetImageUrl(fileName);
+            return $"https://storage.googleapis.com/{_bucketName}/images/{fileName}";
         }
 
-        public string GetImageUrl(string fileName)
+        // Retrieve the image URL from Firebase
+        public async Task<string> GetImageUrlAsync(string fileName)
         {
-            string baseUrl = $"https://firebasestorage.googleapis.com/v0/b/{_bucketName}/o/";
-            string encodedFileName = Uri.EscapeDataString($"images/{fileName}");
-            string fullUrl = $"{baseUrl}{encodedFileName}?alt=media";
-            return fullUrl;
+            try
+            {
+                var imageObject = await _storageClient.GetObjectAsync(_bucketName, $"images/{fileName}");
+
+                // Create a public URL
+                return $"https://storage.googleapis.com/{_bucketName}/images/{fileName}";
+            }
+            catch (Exception)
+            {
+                return null; // Handle error scenarios
+            }
         }
     }
 }

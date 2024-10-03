@@ -94,6 +94,13 @@ namespace WonderingBookApi.Services.Implementation
             return article;
         }
 
+        public async Task<IEnumerable<IdeaCard>> GetIdeaCardsByArticleAsync(Guid articleId)
+        {
+            return await _context.IdeaCards
+                .Where(i => i.ArticleId == articleId)
+                .ToListAsync();
+        }
+
         public async Task UpdateIdeaCardAsync(IdeaCard updatedIdeaCard)
         {
             if (updatedIdeaCard == null)
