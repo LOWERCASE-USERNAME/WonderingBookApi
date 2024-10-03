@@ -80,7 +80,7 @@ namespace WonderingBookApi.Controllers
 
         // POST api/<IdeaCardController>
         [HttpPost("bulk-create")]
-        public async Task<IActionResult> BulkCreate([FromForm] BulkCreateIdeaCardsDTO ideaCardsDTO)
+        public async Task<IActionResult> BulkCreate([FromForm] BulkCreateIdeaCardsDTO ideaCardsDTO) //Create new card or update image of existing card
         {
             if (ideaCardsDTO.IdeaCards == null || !ideaCardsDTO.IdeaCards.Any())
             {
@@ -89,6 +89,19 @@ namespace WonderingBookApi.Controllers
 
             var newIdeaCards = await _ideaCardService.BulkCreateIdeaCardAsync(ideaCardsDTO);
             return Ok(newIdeaCards);
+        }
+
+        // PUT api/<IdeaCardController>
+        [HttpPut("bulk-update")]
+        public async Task<IActionResult> BulkUpdate([FromForm] BulkUpdateIdeaCardsDTO ideaCardsDTO) //Does not update image
+        {
+            if (ideaCardsDTO.IdeaCards == null || !ideaCardsDTO.IdeaCards.Any())
+            {
+                return BadRequest("IdeaCard data is required.");
+            }
+
+            var updateIdeaCards = await _ideaCardService.BulkUpdateIdeaCardAsync(ideaCardsDTO);
+            return Ok(updateIdeaCards);
         }
 
         // PUT api/<IdeaCardController>/5

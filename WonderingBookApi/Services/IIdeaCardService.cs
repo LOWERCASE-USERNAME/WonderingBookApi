@@ -7,6 +7,7 @@ namespace WonderingBookApi.Services
     {
         Task<IdeaCard> CreateIdeaCardAsync(IdeaCard ideaCard);
         Task<IEnumerable<IdeaCard>> BulkCreateIdeaCardAsync(BulkCreateIdeaCardsDTO ideaCards);
+        Task<IEnumerable<IdeaCard>> BulkUpdateIdeaCardAsync(BulkUpdateIdeaCardsDTO ideaCards);
         Task<IdeaCard> GetIdeaCardByIdAsync(Guid id);
         Task<IEnumerable<IdeaCard>> GetAllIdeaCardsAsync();
         Task UpdateIdeaCardAsync(IdeaCard updatedIdeaCard);

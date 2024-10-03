@@ -24,7 +24,7 @@ namespace WonderingBookApi.Services.Implementation
 
         public async Task<Article> GetArticleByIdAsync(Guid id)
         {
-            var article = await _context.Articles.FirstOrDefaultAsync(a => a.ArticleId == id);
+            var article = await _context.Articles.Include(article => article.IdeaCards).FirstOrDefaultAsync(a => a.ArticleId == id);
             return article;
         }
 

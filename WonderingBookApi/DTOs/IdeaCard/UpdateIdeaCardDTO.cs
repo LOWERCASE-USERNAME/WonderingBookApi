@@ -1,24 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using WonderingBookApi.Utilities;
 
-namespace WonderingBookApi.Models
+namespace WonderingBookApi.DTOs.IdeaCard
 {
-    public class IdeaCard
+    public class UpdateIdeaCardDTO
     {
-        [Key]
         public Guid IdeaCardId { get; set; }
-        [Required]
         public Guid ArticleId { get; set; }
         public IdeaCardType CardType { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string? Image { get; set; }
-        public int? Order {  get; set; }
-
-        // Navigation properties
-        [JsonIgnore]
-        public virtual Article Article { get; set; }
-        public virtual ICollection<SavedIdea> SavedIdeas { get; set;}
+        public int? Order { get; set; }
     }
 }

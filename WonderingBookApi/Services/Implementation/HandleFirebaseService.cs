@@ -33,7 +33,15 @@ namespace WonderingBookApi.Services.Implementation
             }
 
             // Return the filename
-            return fileName;
+            return GetImageUrl(fileName);
+        }
+
+        public string GetImageUrl(string fileName)
+        {
+            string baseUrl = $"https://firebasestorage.googleapis.com/v0/b/{_bucketName}/o/";
+            string encodedFileName = Uri.EscapeDataString($"images/{fileName}");
+            string fullUrl = $"{baseUrl}{encodedFileName}?alt=media";
+            return fullUrl;
         }
     }
 }
