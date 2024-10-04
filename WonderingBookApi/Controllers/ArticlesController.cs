@@ -40,6 +40,16 @@ namespace WonderingBookApi.Controllers
             return Ok(article);
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetArticleByUserId(Guid userId)
+        {
+            var article = await _articleService.GetArticlesByUserIdAsync(userId);
+            if (article == null)
+                return NotFound();
+
+            return Ok(article);
+        }
+
         // POST api/<ArticlesController>
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromBody] CreateArticleDTO newArticle)

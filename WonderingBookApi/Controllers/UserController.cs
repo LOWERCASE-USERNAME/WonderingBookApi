@@ -128,32 +128,6 @@ namespace WonderingBookApi.Controllers
             return Ok(new { userInfo = userInfo });
         }
 
-        //[HttpGet("whenyouseemecallin"), Authorize]
-        //public async Task<ActionResult> CheckUser(string email)
-        //{
-        //    string message = "";
-        //    User currentUser = new();
-
-        //    try
-        //    {
-        //        var u = HttpContext.User;
-        //        var principals = new ClaimsPrincipal(u);
-        //        var result = _signInManager.IsSignedIn(principals);
-        //        if (result)
-        //        {
-        //            currentUser = await _signInManager.UserManager.GetUserAsync(principals);
-        //        }
-        //        else
-        //        {
-        //            return Forbid("Access Denied");
-        //        }
-        //    }catch(Exception ex)
-        //    {
-        //        return BadRequest("Something went wrong. Try again. " + ex.Message);
-        //    }
-        //    return Ok(new { message = message, user = currentUser });
-        //}
-
         private string GenerateJwtToken(User user)
         {
             var claims = new List<Claim>
@@ -171,7 +145,7 @@ namespace WonderingBookApi.Controllers
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(14400),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

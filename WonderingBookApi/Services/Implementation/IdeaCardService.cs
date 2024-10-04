@@ -30,12 +30,49 @@ namespace WonderingBookApi.Services.Implementation
                     Order = cardDTO.Order
                 };
                 ideaCard.IdeaCardId = Guid.NewGuid();
-                ideaCard.Image = await _handleFirebaseService.UploadImageAsync(cardDTO.Image, ideaCard.IdeaCardId);
+                if(cardDTO.Image != null)
+                {
+                    ideaCard.Image = await _handleFirebaseService.UploadImageAsync(cardDTO.Image, ideaCard.IdeaCardId);
+                }
                 _context.IdeaCards.Add(ideaCard);
                 listIdeaCards.Add(ideaCard);
             }
 
             await _context.SaveChangesAsync();
+            return listIdeaCards;
+        }
+
+        public async Task<IEnumerable<IdeaCard>> BulkUpdateIdeaCardAsync(BulkUpdateIdeaCardsDTO ideaCards)
+        {
+            var listIdeaCards = new List<IdeaCard>();
+
+            foreach (var cardDTO in ideaCards.IdeaCards)
+            {
+                var existingIdeaCard = await _context.IdeaCards.FindAsync(cardDTO.IdeaCardId);
+
+                if (existingIdeaCard == null)
+                {
+                    // If the record is missing, skip it (or handle it accordingly)
+                    Console.WriteLine($"IdeaCard with ID {cardDTO.IdeaCardId} not found.");
+                    continue;
+                }
+
+                // Now create and attach the new IdeaCard instance
+                existingIdeaCard.ArticleId = cardDTO.ArticleId;
+                existingIdeaCard.CardType = cardDTO.CardType;
+                existingIdeaCard.Title = cardDTO.Title;
+                existingIdeaCard.Content = cardDTO.Content;
+                existingIdeaCard.Image = cardDTO.Image;
+                existingIdeaCard.Order = cardDTO.Order;
+
+
+                //_context.IdeaCards.Attach(ideaCard);  // Attach new entity
+                _context.Entry(existingIdeaCard).State = EntityState.Modified;  // Mark it as modified
+
+                listIdeaCards.Add(existingIdeaCard);
+            }
+
+            await _context.SaveChangesAsync();  // Save changes to the database
             return listIdeaCards;
         }
 

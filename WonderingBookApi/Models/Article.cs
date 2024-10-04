@@ -11,7 +11,9 @@ namespace WonderingBookApi.Models
         public string UserId { get; set; }
         [Required]
         public string Title { get; set; }
-        public string AuthorNotes { get; set; }
+        public string? MiscAuthor { get; set; }
+        public string CuratorNote { get; set; } = string.Empty;
+        public string? Image { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }
 

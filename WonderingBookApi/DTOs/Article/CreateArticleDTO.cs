@@ -4,6 +4,5 @@
     {
         public Guid UserId { get; set; }
         public string Title { get; set; }
-        public string AuthorNotes { get; set; }
     }
 }
