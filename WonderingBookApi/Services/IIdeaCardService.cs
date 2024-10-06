@@ -12,6 +12,6 @@ namespace WonderingBookApi.Services
         Task<IEnumerable<IdeaCard>> GetAllIdeaCardsAsync();
         Task<IEnumerable<IdeaCard>> GetIdeaCardsByArticleAsync(Guid articleId);
         Task UpdateIdeaCardAsync(IdeaCard updatedIdeaCard);
-        // Task DeleteIdeaCardAsync(Guid id);
+        Task DeleteIdeaCardsAsync(List<Guid> ideaCards);
     }
 }

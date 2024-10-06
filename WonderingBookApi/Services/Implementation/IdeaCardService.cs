@@ -83,6 +83,40 @@ namespace WonderingBookApi.Services.Implementation
             return ideaCard;
         }
 
+        public async Task DeleteIdeaCardsAsync(List<Guid> ideaCards)
+        {
+            try
+            {
+                // Get list of save ideas link 
+                var savedIdeas = _context.SavedIdeas
+                    .Where(si => ideaCards.Contains(si.IdeaCardId))
+                    .ToList();
+                // Get list of ideaCards
+                var cards = _context.IdeaCards
+                    .Where(c => ideaCards.Contains(c.IdeaCardId))
+                    .ToList();
+
+                var listImage = cards.Select(c => c.Image).ToList();
+
+                // Remove Saved Ideas
+                _context.SavedIdeas.RemoveRange(savedIdeas);
+
+                // Remove Idea Cards
+                _context.IdeaCards.RemoveRange(cards);
+
+                // Remove images from firebase
+                await _handleFirebaseService
+                    .DeleteImageAsync(listImage);
+
+                await _context.SaveChangesAsync();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            
+        }
+
         public async Task<IEnumerable<IdeaCard>> GetAllIdeaCardsAsync()
         {
             return await _context.IdeaCards.ToListAsync();

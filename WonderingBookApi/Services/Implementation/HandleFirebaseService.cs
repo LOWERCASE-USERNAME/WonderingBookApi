@@ -1,5 +1,7 @@
 ﻿
+using Firebase.Storage;
 using Google.Cloud.Storage.V1;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WonderingBookApi.Services.Implementation
 {
@@ -53,6 +55,36 @@ namespace WonderingBookApi.Services.Implementation
             {
                 return null; // Handle error scenarios
             }
+        }
+
+        public async Task DeleteImageAsync(IEnumerable<string> imageUrls)
+        {
+            try
+            {
+                if (imageUrls == null || !imageUrls.Any())
+                    throw new ArgumentException("Invalid image URL");
+
+                
+                foreach (var imageUrl in imageUrls)
+                {
+                    var filePath = GetFilePathFromUrl(imageUrl);
+                    await _storageClient.DeleteObjectAsync(_bucketName, $"{filePath}");
+                }
+            }
+            catch(Exception ex) 
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
+
+        }
+
+        private string GetFilePathFromUrl(string imageUrl)
+        {
+            var uri = new Uri(imageUrl);
+            var path = uri.AbsolutePath;
+            string filePath = path.Replace($"/{_bucketName}/", "");
+            return filePath;
         }
     }
 }
