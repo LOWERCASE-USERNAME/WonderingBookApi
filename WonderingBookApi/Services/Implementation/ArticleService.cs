@@ -15,7 +15,6 @@ namespace WonderingBookApi.Services.Implementation
 
         public async Task<Article> CreateArticleAsync(Article newArticle)
         {
-            newArticle.ArticleId = Guid.NewGuid();
             newArticle.DateCreated = DateTime.UtcNow;
             _context.Articles.Add(newArticle);
             await _context.SaveChangesAsync();

@@ -123,9 +123,21 @@ namespace WonderingBookApi.Controllers
         }
 
         // DELETE api/<IdeaCardController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteIdeaCards([FromBody]List<Guid> ideaCards)
         {
+            if (ideaCards == null || !ideaCards.Any())
+            {
+                return BadRequest("IdeaCards id is required.");
+            }
+            try
+            {
+                await _ideaCardService.DeleteIdeaCardsAsync(ideaCards);
+                return NoContent();
+            }catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

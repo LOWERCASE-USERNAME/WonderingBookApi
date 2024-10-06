@@ -14,11 +14,13 @@ namespace WonderingBookApi.Controllers
     public class ArticlesController : ControllerBase
     {
         private readonly IArticleService _articleService;
+        private readonly IHandleFirebaseService _storage;
         private readonly IMapper _mapper;
-        public ArticlesController(IArticleService articleService, IMapper mapper) 
+        public ArticlesController(IArticleService articleService, IMapper mapper, IHandleFirebaseService storage) 
         {
             _articleService = articleService;
             _mapper = mapper;
+            _storage = storage;
         }
 
         // GET: api/<ArticlesController>
@@ -52,12 +54,14 @@ namespace WonderingBookApi.Controllers
 
         // POST api/<ArticlesController>
         [HttpPost]
-        public async Task<IActionResult> CreateArticle([FromBody] CreateArticleDTO newArticle)
+        public async Task<IActionResult> CreateArticle([FromForm] CreateArticleDTO newArticle)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var article = _mapper.Map<Article>(newArticle);
+            article.ArticleId = Guid.NewGuid();
+            article.Image = await _storage.UploadImageAsync(newArticle.Image, article.ArticleId);
             var createdArticle = await _articleService.CreateArticleAsync(article);
             return CreatedAtAction(nameof(GetArticle), new { id = createdArticle.ArticleId }, createdArticle);
         }

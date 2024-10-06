@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using WonderingBookApi.Models;
 
@@ -26,6 +27,20 @@ namespace WonderingBookApi.Data
             }
 
             base.OnModelCreating(modelBuilder);
+
+            //// Seeding data for Position table
+            //modelBuilder.Entity<Topic>().HasData(
+            //    new Topic { TopicName = "habit" },
+            //    new Topic { TopicName = "productivity" },
+            //    new Topic { TopicName = "mindfulness" },
+            //    new Topic { TopicName = "motivation" },
+            //    new Topic { TopicName = "personal-development" },
+            //    new Topic { TopicName = "success" },
+            //    new Topic { TopicName = "growth" },
+            //    new Topic { TopicName = "learning" },
+            //    new Topic { TopicName = "inspiration" },
+            //    new Topic { TopicName = "wellness" }
+            //    );
         }
 
         public DbSet<Book> Books { get; set; }

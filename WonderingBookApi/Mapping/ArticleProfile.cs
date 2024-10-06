@@ -9,7 +9,8 @@ namespace WonderingBookApi.Mapping
         public ArticleProfile() 
         {
             // Map from source to dest
-            CreateMap<CreateArticleDTO, Article>();
+            CreateMap<CreateArticleDTO, Article>()
+                .ForMember(dest => dest.Image, opt => opt.Ignore());
             CreateMap<UpdateArticleDTO, Article>();
             CreateMap<Article, UpdateArticleDTO>();
         }
