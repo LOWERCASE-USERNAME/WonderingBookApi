@@ -64,7 +64,7 @@ namespace WonderingBookApi.Controllers
 
         // PUT api/<ArticlesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateArticle(Guid id, [FromBody] UpdateArticleDTO updateArticle)
+        public async Task<IActionResult> UpdateArticle(Guid id, [FromForm] UpdateArticleDTO updateArticle)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
