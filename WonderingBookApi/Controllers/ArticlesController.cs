@@ -61,7 +61,8 @@ namespace WonderingBookApi.Controllers
 
             var article = _mapper.Map<Article>(newArticle);
             article.ArticleId = Guid.NewGuid();
-            article.Image = await _storage.UploadImageAsync(newArticle.Image, article.ArticleId);
+            if (newArticle.Image != null)
+                article.Image = await _storage.UploadImageAsync(newArticle.Image, article.ArticleId);
             var createdArticle = await _articleService.CreateArticleAsync(article);
             return CreatedAtAction(nameof(GetArticle), new { id = createdArticle.ArticleId }, createdArticle);
         }
@@ -80,6 +81,8 @@ namespace WonderingBookApi.Controllers
                     return NotFound();
 
                 _mapper.Map(updateArticle, article);
+                if(updateArticle.Image != null)
+                    article.Image = await _storage.UploadImageAsync(updateArticle.Image, article.ArticleId);
                 await _articleService.UpdateArticleAsync(article);
             }
             catch (InvalidOperationException ex)
