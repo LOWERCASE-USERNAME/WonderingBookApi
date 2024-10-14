@@ -32,7 +32,7 @@ namespace WonderingBookApi.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<GoogleBook>>> SearchBooks([FromQuery] string query, [FromQuery] int maxResults = 10, [FromQuery]int startIndex = 0, [FromQuery]string langRestrict = "en")
+        public async Task<ActionResult<IEnumerable<GoogleBook>>> SearchBooks([FromQuery] string query, [FromQuery] int maxResults = 10, [FromQuery]int startIndex = 0, [FromQuery]string langRestrict = "vi")
         {
             var books = await _bookService.SearchBooksAsync(query, maxResults, startIndex, langRestrict);
             return Ok(books);
