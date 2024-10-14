@@ -16,6 +16,17 @@ namespace WonderingBookApi.Data
             if (modelBuilder == null)
                 throw new ArgumentNullException("modelBuilder");
 
+            // Unique constraint for TransactionCode
+            modelBuilder.Entity<FinancialTransaction>()
+                .HasIndex(w => w.TransactionCode)
+                .IsUnique();
+
+            // Define one-to-one relationship between User and Wallet
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Wallet)
+                .WithOne(w => w.User)
+                .HasForeignKey<Wallet>(w => w.UserId); 
+
             // for the other conventions, we do a metadata model loop
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
@@ -50,5 +61,8 @@ namespace WonderingBookApi.Data
         public DbSet<SavedIdea> SavedIdeas { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<FinancialTransaction> FinancialTransactions { get; set; }
+        public DbSet<Payment> Payments { get; set; }
     }
 }
