@@ -18,5 +18,6 @@ namespace WonderingBookApi.Models
         // Navigation properties
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<SavedIdea> SavedIdeas { get; set; }
+        public virtual Wallet? Wallet { get; set; }
     }
 }
