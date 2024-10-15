@@ -61,6 +61,8 @@ namespace WonderingBookApi.Controllers
 
             var article = _mapper.Map<Article>(newArticle);
             article.ArticleId = Guid.NewGuid();
+            if(newArticle.DefaultImage != null)
+                article.Image = newArticle.DefaultImage;
             if (newArticle.Image != null)
                 article.Image = await _storage.UploadImageAsync(newArticle.Image, article.ArticleId);
             var createdArticle = await _articleService.CreateArticleAsync(article);

@@ -122,6 +122,20 @@ namespace WonderingBookApi.Controllers
         {
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteIdeaCards(Guid id)
+        {
+            try
+            {
+                await _ideaCardService.DeleteIdeaCardsAsync(new List<Guid>() {id});
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         // DELETE api/<IdeaCardController>/5
         [HttpDelete]
         public async Task<IActionResult> DeleteIdeaCards([FromBody]List<Guid> ideaCards)
