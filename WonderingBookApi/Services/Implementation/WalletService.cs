@@ -51,5 +51,15 @@ namespace WonderingBookApi.Services.Implementation
             }
             return await _context.Wallets.FirstOrDefaultAsync(w => w.UserId == userId);
         }
+
+        public async Task<Wallet> UpdateWalletAsync(int walletId, decimal amount)
+        {
+            var wallet = await GetWalletAsync(walletId);
+            wallet.Balance += amount;
+            await _context.SaveChangesAsync();
+            return wallet;
+        }
+
+        public async Task<Wallet> GetWalletAsync(int walletId) => await _context.Wallets.FirstOrDefaultAsync(w => w.WalletId == walletId);
     }
 }

@@ -9,12 +9,12 @@ namespace WonderingBookApi.Models
         [Key]
         public Guid FinancialTransactionId { get; set; }
         [Required]
-        public int? WalletId { get; set; }
+        public int WalletId { get; set; }
         [Required]
         public string TransactionCode { get; set; } = string.Empty;
         [Required]
         [Precision(18, 2)]
-        public decimal? Amount { get; set; }
+        public decimal Amount { get; set; }
         [Required]
         public DateTime? CreatedAt { get; set; }
         [Required]
