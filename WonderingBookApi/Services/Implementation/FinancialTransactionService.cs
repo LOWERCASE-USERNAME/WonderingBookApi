@@ -1,4 +1,5 @@
-﻿using WonderingBookApi.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using WonderingBookApi.Data;
 using WonderingBookApi.Models;
 
 namespace WonderingBookApi.Services.Implementation
@@ -24,24 +25,12 @@ namespace WonderingBookApi.Services.Implementation
             return transaction;
         }
 
-        public Task<IEnumerable<FinancialTransaction>> GetAllTransactionsAsync()
+        public Task<FinancialTransaction> GetTransactionByCodeAsync(string code)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<FinancialTransaction> GetArticleByIdAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<FinancialTransaction>> GetUserSuccessTransactionsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateTransactionAsync()
-        {
-            throw new NotImplementedException();
+            if (code == null)
+                throw new ArgumentNullException(nameof(code));
+            var transaction = _context.FinancialTransactions.FirstOrDefaultAsync(t => t.TransactionCode == code);
+            return transaction;
         }
 
         public string TransactionCodeGenerate()
@@ -53,6 +42,23 @@ namespace WonderingBookApi.Services.Implementation
                     .Select(s => s[random.Next(s.Length)]).ToArray());
             var result = code + timestamp;
             return result;
+        }
+
+        public async Task UpdateTransactionAsync(FinancialTransaction transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException(nameof(transaction));
+            try
+            {
+                _context.Entry(transaction).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+
         }
     }
 }

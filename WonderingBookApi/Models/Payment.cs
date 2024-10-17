@@ -9,10 +9,10 @@ namespace WonderingBookApi.Models
         [Key]
         public Guid PaymentId { get; set; }
         [Required]
-        public int? WalletId { get; set; }
+        public int WalletId { get; set; }
         [Required]
         [Precision(18,2)]
-        public decimal? PayAmount { get; set; }
+        public decimal PayAmount { get; set; }
         [Required]
         public PaymentType? PaymentType { get; set; }
         [Required]

@@ -1,4 +1,5 @@
 ﻿using WonderingBookApi.Models;
+using WonderingBookApi.Utilities;
 
 namespace WonderingBookApi.Services
 {
@@ -6,10 +7,10 @@ namespace WonderingBookApi.Services
     {
         // Use to create new Transaction 
         Task<FinancialTransaction> CreateTransactionAsync(FinancialTransaction transaction);
-        Task<FinancialTransaction> GetArticleByIdAsync();
-        Task<IEnumerable<FinancialTransaction>> GetAllTransactionsAsync();
-        Task UpdateTransactionAsync();
-        Task<IEnumerable<FinancialTransaction>> GetUserSuccessTransactionsAsync();
+        Task<FinancialTransaction> GetTransactionByCodeAsync(string code);
+        // Task<IEnumerable<FinancialTransaction>> GetAllTransactionsAsync();
+        Task UpdateTransactionAsync(FinancialTransaction transaction);
+        // Task<IEnumerable<FinancialTransaction>> GetUserSuccessTransactionsAsync();
 
     }
 }
