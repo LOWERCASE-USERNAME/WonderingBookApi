@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Google.Apis.Util;
 using Microsoft.AspNetCore.Mvc;
 using WonderingBookApi.DTOs.Article;
 using WonderingBookApi.Models;
@@ -14,13 +15,19 @@ namespace WonderingBookApi.Controllers
     public class ArticlesController : ControllerBase
     {
         private readonly IArticleService _articleService;
+        private readonly IBookService _bookService;
         private readonly IHandleFirebaseService _storage;
         private readonly IMapper _mapper;
-        public ArticlesController(IArticleService articleService, IMapper mapper, IHandleFirebaseService storage) 
+        public ArticlesController(
+            IArticleService articleService, 
+            IMapper mapper, 
+            IHandleFirebaseService storage, 
+            IBookService bookService) 
         {
             _articleService = articleService;
             _mapper = mapper;
             _storage = storage;
+            _bookService = bookService;
         }
 
         // GET: api/<ArticlesController>
@@ -42,6 +49,17 @@ namespace WonderingBookApi.Controllers
             return Ok(article);
         }
 
+        // GET api/<ArticlesController>/search
+        [HttpGet("search-by-book")]
+        public async Task<IActionResult> GetArticleByBook(string name)
+        {
+            var article = await _articleService.GetArticlesByBookNameAsync(name);
+            if (article == null)
+                return NotFound();
+
+            return Ok(article);
+        }
+
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetArticleByUserId(Guid userId)
         {
@@ -54,12 +72,25 @@ namespace WonderingBookApi.Controllers
 
         // POST api/<ArticlesController>
         [HttpPost]
-        public async Task<IActionResult> CreateArticle([FromForm] CreateArticleDTO newArticle)
+        public async Task<IActionResult> CreateArticle([FromBody] CreateArticleDTO newArticle)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            
 
             var article = _mapper.Map<Article>(newArticle);
+            if (newArticle.Book != null)
+            {
+                if (await _bookService.CheckExistAsync(newArticle.Book.Id))
+                {
+                    article.BookId = newArticle.Book.Id;
+                }
+                else
+                {
+                    var createdBook = await _bookService.CreateBookAsync(_mapper.Map<Book>(newArticle.Book));
+                }
+                
+            }
             article.ArticleId = Guid.NewGuid();
             if(newArticle.DefaultImage != null)
                 article.Image = newArticle.DefaultImage;

@@ -9,6 +9,7 @@ namespace WonderingBookApi.Services
         Task<IEnumerable<Article>> GetAllArticlesAsync();
         Task UpdateArticleAsync(Article updatedArticle);
         Task<IEnumerable<Article>> GetArticlesByUserIdAsync(Guid userId);
+        Task<IEnumerable<Article>> GetArticlesByBookNameAsync(string name);
         // Task DeleteArticleAsync(Guid id);
     }
 }
