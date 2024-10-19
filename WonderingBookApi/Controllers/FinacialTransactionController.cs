@@ -70,10 +70,33 @@ namespace WonderingBookApi.Controllers
             return Ok($"https://img.vietqr.io/image/{bankId}-{accountNo}-{template}.png?amount={amount}&addInfo={description}&accountName={account}");
         }
 
-        // PUT api/<FinacialTransactionController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // POST api/<FinacialTransactionController>/
+        [HttpPost("check")]
+        public async Task<IActionResult> TransactionCheck([FromBody] CheckTransactionDTO transaction)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                // Find transaction
+                var existTransaction = await _transact.GetTransactionByCodeAsync(transaction.TransactionCode);
+                // Check Amount
+                if(existTransaction.Amount == transaction.Amount && transaction.TransactionDate <= existTransaction.ExpiredAt)
+                {
+                    existTransaction.Status = TransactionStatus.Success;
+                }
+                // Update Status
+                await _transact.UpdateTransactionAsync(existTransaction);
+                var wallet = await _wallet.UpdateWalletAsync(existTransaction.WalletId, existTransaction.Amount);
+                return Ok(existTransaction);
+                // return transaction
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+            
         }
 
         // DELETE api/<FinacialTransactionController>/5

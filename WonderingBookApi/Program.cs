@@ -42,6 +42,7 @@ namespace WonderingBookApi
             builder.Services.AddScoped<IHandleFirebaseService, HandleFirebaseService>();
             builder.Services.AddScoped<IFinancialTransactionService, FinancialTransactionService>();
             builder.Services.AddScoped<IWalletService, WalletService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 
             builder.Services.AddAuthentication(options =>
