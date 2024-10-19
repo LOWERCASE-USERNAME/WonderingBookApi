@@ -53,5 +53,12 @@ namespace WonderingBookApi.Services.Implementation
             var article = await _context.Articles.Where(a => a.UserId == userId.ToString()).ToListAsync();
             return article;
         }
+
+        public async Task<IEnumerable<Article>> RecommendArticles()
+        {
+            //Take random 5 articles
+            var article = await _context.Articles.OrderBy(x => Guid.NewGuid()).Take(5).ToListAsync();
+            return article;
+        }
     }
 }
