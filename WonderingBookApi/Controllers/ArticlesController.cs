@@ -48,7 +48,6 @@ namespace WonderingBookApi.Controllers
 
             return Ok(article);
         }
-
         // GET api/<ArticlesController>/search
         [HttpGet("search-by-book")]
         public async Task<IActionResult> GetArticleByBook(string name)
@@ -56,7 +55,13 @@ namespace WonderingBookApi.Controllers
             var article = await _articleService.GetArticlesByBookNameAsync(name);
             if (article == null)
                 return NotFound();
+            return Ok(article);
 
+        }
+        [HttpGet("recommend")]
+        public async Task<IActionResult> RecommendArticles()
+        {
+            var article = await _articleService.RecommendArticles();
             return Ok(article);
         }
 
@@ -114,7 +119,9 @@ namespace WonderingBookApi.Controllers
                     return NotFound();
 
                 _mapper.Map(updateArticle, article);
-                if(updateArticle.Image != null)
+                if (updateArticle.DefaultImage != null)
+                    article.Image = updateArticle.DefaultImage;
+                if (updateArticle.Image != null)
                     article.Image = await _storage.UploadImageAsync(updateArticle.Image, article.ArticleId);
                 await _articleService.UpdateArticleAsync(article);
             }
