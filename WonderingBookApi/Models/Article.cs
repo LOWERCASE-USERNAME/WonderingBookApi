@@ -11,6 +11,8 @@ namespace WonderingBookApi.Models
         public string UserId { get; set; }
         [Required]
         public string Title { get; set; }
+        [ForeignKey("Book")]
+        public string? BookId { get; set; }
         public string? MiscAuthor { get; set; }
         public string CuratorNote { get; set; } = string.Empty;
         public string? Image { get; set; }

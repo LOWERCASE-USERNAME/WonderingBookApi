@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-namespace WonderingBookApi.Models
+namespace WonderingBookApi.DTOs.Book
 {
-    public class Book
+    public class CreateBookDTO
     {
-        [Key]
         public string Id { get; set; }
         public string Title { get; set; }
         public string Authors { get; set; }
@@ -15,8 +13,5 @@ namespace WonderingBookApi.Models
         public string? ISBN { get; set; }
         public int? PageCount { get; set; }
         public string? ImageLink { get; set; }
-        // Navigation property
-        [JsonIgnore]
-        public virtual ICollection<Article> Articles { get; set; }
     }
 }

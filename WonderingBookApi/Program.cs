@@ -43,6 +43,7 @@ namespace WonderingBookApi
             builder.Services.AddScoped<IFinancialTransactionService, FinancialTransactionService>();
             builder.Services.AddScoped<IWalletService, WalletService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
+            builder.Services.AddScoped<IBookService, BookService>();
 
 
             builder.Services.AddAuthentication(options =>

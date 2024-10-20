@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Google.Apis.Books.v1.Data;
+using WonderingBookApi.DTOs.Book;
 using WonderingBookApi.Models;
 
 namespace WonderingBookApi.Mapping
@@ -18,6 +19,7 @@ namespace WonderingBookApi.Mapping
                     && src.VolumeInfo.IndustryIdentifiers.Any() ? src.VolumeInfo.IndustryIdentifiers.First().Identifier : null))
                 .ForMember(dest => dest.PageCount, opt => opt.MapFrom(src => src.VolumeInfo.PageCount))
                 .ForMember(dest => dest.ImageLink, opt => opt.MapFrom(src => src.VolumeInfo.ImageLinks.Thumbnail));
+            CreateMap<CreateBookDTO, Book>();
         }
     }
 }
