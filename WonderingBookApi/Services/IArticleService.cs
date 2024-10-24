@@ -11,6 +11,6 @@ namespace WonderingBookApi.Services
         Task<IEnumerable<Article>> GetArticlesByUserIdAsync(Guid userId);
         Task<IEnumerable<Article>> GetArticlesByBookNameAsync(string name);
         Task<IEnumerable<Article>> RecommendArticles();
-        // Task DeleteArticleAsync(Guid id);
+        Task DeleteArticleAsync(Guid id);
     }
 }

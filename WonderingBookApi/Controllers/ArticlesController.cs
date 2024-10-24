@@ -134,8 +134,17 @@ namespace WonderingBookApi.Controllers
 
         // DELETE api/<ArticlesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
+            try
+            {
+                await _articleService.DeleteArticleAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using WonderingBookApi.Data;
 using WonderingBookApi.Models;
 
@@ -7,9 +8,14 @@ namespace WonderingBookApi.Services.Implementation
     public class ArticleService : IArticleService
     {
         private readonly ApplicationDbContext _context;
-        public ArticleService(ApplicationDbContext context)
+        private readonly IIdeaCardService _ideaCardService;
+        private readonly IHandleFirebaseService _handleFirebaseService;
+
+        public ArticleService(ApplicationDbContext context, IIdeaCardService ideaCardService, IHandleFirebaseService handleFirebaseService)
         {
             _context = context;
+            _ideaCardService = ideaCardService;
+            _handleFirebaseService = handleFirebaseService;
         }
 
         public async Task<Article> CreateArticleAsync(Article newArticle)
@@ -68,6 +74,39 @@ namespace WonderingBookApi.Services.Implementation
             var article = await _context.Articles.OrderBy(x => Guid.NewGuid()).Take(5).ToListAsync();
             return article;
 
+        }
+
+        public async Task DeleteArticleAsync(Guid articleId)
+        {
+            try
+            {
+                Article article = await _context.Articles.FirstOrDefaultAsync(a => a.ArticleId == articleId);
+                if(article == null) throw new Exception($"Article with ID {articleId} not found.");
+
+                // Get list of ideaCards
+                List<IdeaCard> ideaCards = await _context.IdeaCards
+                    .Where(ic => ic.ArticleId == articleId)
+                    .ToListAsync();
+
+                await _ideaCardService.DeleteIdeaCardsAsync(ideaCards.Select(ic => ic.IdeaCardId).ToList());
+
+                // Remove image from firebase
+                if(!string.IsNullOrEmpty(article.Image))
+                {
+                    await _handleFirebaseService
+                    .DeleteImageAsync(new List<string>() { article.Image });
+                }
+
+                // Remove the article from the context
+                _context.Articles.Remove(article);
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
     }
 }
