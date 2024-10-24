@@ -60,14 +60,23 @@ namespace WonderingBookApi.Services.Implementation
             return article;
         }
 
+        public async Task<IEnumerable<Article>> GetArticlesByBookIdAsync(string id)
+        {
+            return await _context.Articles
+                 .Include(a => a.Book)
+                 .Where(a => a.Book.Id.ToLower().Equals(id.ToLower()))
+                 .ToListAsync();
+        }
+
         public async Task<IEnumerable<Article>> GetArticlesByBookNameAsync(string name)
         {
            return await _context.Articles
                 .Include(a => a.Book)
-                .Where(a => a.Book.Title != null && a.Book.Title
-                .Contains(name, StringComparison.OrdinalIgnoreCase))
+                .Where(a => a.Book.Title != null && a.Book.Title.ToLower()
+                .Contains(name.ToLower()))
                 .ToListAsync();
         }
+
         public async Task<IEnumerable<Article>> RecommendArticles()
         {
             //Take random 5 articles

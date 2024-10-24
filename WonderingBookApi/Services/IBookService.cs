@@ -12,6 +12,7 @@ namespace WonderingBookApi.Services
         Task<Book> CreateBookAsync(Book newBook);
         Task<bool> CheckExistAsync(string id);
         Task<IEnumerable<Book>> GetBooksAsync();
+        public Task<IEnumerable<Book>> GetBooksByNameAsync(string name);
 
     }
 }

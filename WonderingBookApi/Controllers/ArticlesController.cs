@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Google.Apis.Util;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using WonderingBookApi.DTOs.Article;
+using WonderingBookApi.DTOs.Book;
 using WonderingBookApi.Models;
 using WonderingBookApi.Services;
 using WonderingBookApi.Services.Implementation;
@@ -48,7 +50,16 @@ namespace WonderingBookApi.Controllers
 
             return Ok(article);
         }
-        // GET api/<ArticlesController>/search
+
+        [HttpGet("search-by-book-id")]
+        public async Task<IActionResult> GetArticleByBookId(string id)
+        {
+            var article = await _articleService.GetArticlesByBookIdAsync(id);
+            if (article == null)
+                return NotFound();
+            return Ok(article);
+        }
+
         [HttpGet("search-by-book")]
         public async Task<IActionResult> GetArticleByBook(string name)
         {
@@ -56,8 +67,8 @@ namespace WonderingBookApi.Controllers
             if (article == null)
                 return NotFound();
             return Ok(article);
-
         }
+
         [HttpGet("recommend")]
         public async Task<IActionResult> RecommendArticles()
         {
@@ -77,26 +88,37 @@ namespace WonderingBookApi.Controllers
 
         // POST api/<ArticlesController>
         [HttpPost]
-        public async Task<IActionResult> CreateArticle([FromBody] CreateArticleDTO newArticle)
+        public async Task<IActionResult> CreateArticle([FromForm] CreateArticleDTO newArticle)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             
 
             Article article = _mapper.Map<Article>(newArticle);
-            if (newArticle.Book != null)
+            if (!string.IsNullOrEmpty(newArticle.SerializedBook))
             {
-                if (await _bookService.CheckExistAsync(newArticle.Book.Id))
+                CreateBookDTO bookDto = null;
+                try
                 {
-                    article.BookId = newArticle.Book.Id;
+                    bookDto = JsonConvert.DeserializeObject<CreateBookDTO>(newArticle.SerializedBook);
+                }
+                catch (JsonException)
+                {
+                    return BadRequest("Invalid book data format.");
+                }
+
+                if (await _bookService.CheckExistAsync(bookDto.Id))
+                {
+                    article.BookId = bookDto.Id;
                 }
                 else
                 {
-                    var createdBook = await _bookService.CreateBookAsync(_mapper.Map<Book>(newArticle.Book));
+                    var createdBook = await _bookService.CreateBookAsync(_mapper.Map<Book>(bookDto));
+                    article.BookId = createdBook.Id;
                 }
-                
             }
             article.ArticleId = Guid.NewGuid();
+
             if(newArticle.DefaultImage != null)
                 article.Image = newArticle.DefaultImage;
             if (newArticle.Image != null)

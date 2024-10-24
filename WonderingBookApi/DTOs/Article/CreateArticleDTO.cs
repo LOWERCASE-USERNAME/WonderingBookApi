@@ -12,6 +12,6 @@ namespace WonderingBookApi.DTOs.Article
         public IFormFile? Image { get; set; }
         public string? DefaultImage { get; set; }
 
-        public CreateBookDTO? Book { get; set; }
+        public string? SerializedBook { get; set; }
     }
 }

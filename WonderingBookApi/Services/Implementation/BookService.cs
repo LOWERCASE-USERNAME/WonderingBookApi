@@ -26,5 +26,12 @@ namespace WonderingBookApi.Services.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<Book>> GetBooksByNameAsync(string name)
+        {
+            return await _context.Books
+                 .Where(b => b.Title != null && b.Title.ToLower().Contains(name.ToLower()))
+                 .ToListAsync();
+        }
     }
 }
