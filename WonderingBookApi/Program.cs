@@ -1,7 +1,9 @@
 
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -62,10 +64,16 @@ namespace WonderingBookApi
                     ValidAudience = builder.Configuration["Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                 };
+            })
+            .AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
             });
             builder.Services.AddAuthorization();
-            builder.Services.AddDbContext<ApplicationDbContext>(options => 
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            //builder.Services.AddDbContext<ApplicationDbContext>(options => 
+            //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddIdentityCore<User>(options =>
             {
@@ -85,6 +93,7 @@ namespace WonderingBookApi
                 options.User.RequireUniqueEmail = true;
 
             }).AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -97,6 +106,11 @@ namespace WonderingBookApi
                           .AllowAnyMethod()
                           .AllowAnyHeader();
                 });
+            });
+            builder.Services.AddHttpClient<OAuthHandler<GoogleOptions>>()
+            .ConfigureHttpClient(client =>
+            {
+                client.Timeout = TimeSpan.FromMinutes(2); // Set a higher timeout for testing
             });
 
             var app = builder.Build();

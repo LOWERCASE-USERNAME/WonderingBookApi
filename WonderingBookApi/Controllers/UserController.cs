@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -93,6 +95,48 @@ namespace WonderingBookApi.Controllers
             {
                 return BadRequest("Something went wrong. Try again. " + ex.Message);
             }
+        }
+
+        [HttpPost("google-login")]
+        public async Task<IActionResult> GoogleLogin([FromBody] string token)
+        {
+            // Validate the Google token
+            GoogleJsonWebSignature.Payload payload;
+            try
+            {
+                payload = await GoogleJsonWebSignature.ValidateAsync(token);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Invalid Google token. " + ex.Message);
+            }
+
+            // Check if the user already exists
+            var user = await _userManager.FindByEmailAsync(payload.Email);
+            if (user != null)
+            {
+                // Log the user in
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return Ok(new { message = "Login Successful", token = GenerateJwtToken(user) });
+            }
+
+            // If the user doesn't exist, create a new account
+            var username = payload.Email.Substring(0, payload.Email.IndexOf('@'));
+            var userToCreate = new User
+            {
+                Email = payload.Email,
+                UserName = username,
+                Fullname = payload.Name // Assuming you want to store the full name from Google
+            };
+
+            var createUserResult = await _userManager.CreateAsync(userToCreate);
+            if (createUserResult.Succeeded)
+            {
+                await _signInManager.SignInAsync(userToCreate, isPersistent: false);
+                return Ok(new { message = "User created and logged in successfully", token = GenerateJwtToken(userToCreate) });
+            }
+
+            return BadRequest(createUserResult.Errors.Select(e => e.Description));
         }
 
         [HttpGet("logout"), Authorize]
