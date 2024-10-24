@@ -83,7 +83,7 @@ namespace WonderingBookApi.Controllers
                 return BadRequest(ModelState);
             
 
-            var article = _mapper.Map<Article>(newArticle);
+            Article article = _mapper.Map<Article>(newArticle);
             if (newArticle.Book != null)
             {
                 if (await _bookService.CheckExistAsync(newArticle.Book.Id))
