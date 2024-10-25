@@ -31,5 +31,10 @@ namespace WonderingBookApi.Services.Implementation
                 throw;
             }
         }
+
+        public async Task<IEnumerable<Payment>> GetPaymentHistoryOfWallet(int walletId)
+        {
+            return await _context.Payments.Where(p => p.WalletId == walletId).ToListAsync();
+        }
     }
 }

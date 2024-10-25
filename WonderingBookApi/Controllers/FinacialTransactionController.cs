@@ -18,16 +18,19 @@ namespace WonderingBookApi.Controllers
         private readonly IConfiguration _config;
         private readonly IFinancialTransactionService _transact;
         private readonly IWalletService _wallet;
+        private readonly IPaymentService _payment;
         private readonly IMapper _mapper;
         public FinacialTransactionController(
             IMapper mapper, 
             IFinancialTransactionService transact, 
             IWalletService wallet, 
+            IPaymentService payment,
             IConfiguration config)
         {
             _mapper = mapper;
             _transact = transact;
             _wallet = wallet;
+            _payment = payment;
             _config = config;
         }
         // GET: api/<FinacialTransactionController>
@@ -97,6 +100,20 @@ namespace WonderingBookApi.Controllers
                 throw;
             }
             
+        }
+
+        [HttpGet("get-personal-wallet")]
+        public async Task<IActionResult> GetPersonalWallet(Guid userId)
+        {
+            var wallet = await _wallet.GetUserWalletAsync(userId.ToString());
+            return Ok(wallet);
+        }
+
+        [HttpGet("get-payment-history")]
+        public async Task<IActionResult> GetPaymentHistory(int walletId)
+        {
+            var wallet = await _payment.GetPaymentHistoryOfWallet(walletId);
+            return Ok(wallet);
         }
 
         // DELETE api/<FinacialTransactionController>/5
