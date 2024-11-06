@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WonderingBookApi.Utilities;
 
 namespace WonderingBookApi.Models
 {
@@ -18,6 +19,8 @@ namespace WonderingBookApi.Models
         public string? Image { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }
+        [Required]
+        public ArticleStatus? Status { get; set; } = ArticleStatus.Draft; 
 
         // Navigation properties
         public virtual User User { get; set; }

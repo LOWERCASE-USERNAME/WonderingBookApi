@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WonderingBookApi.Data;
 
@@ -11,9 +12,11 @@ using WonderingBookApi.Data;
 namespace WonderingBookApi.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241106154531_ArticleStatusAndSeedData")]
+    partial class ArticleStatusAndSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,38 +50,6 @@ namespace WonderingBookApi.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "1bfa4d50-b885-48b9-835a-f47ad854046b",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "03482d4b-c825-4ae8-a1f1-26e98f3b8a5b",
-                            Name = "Moderator",
-                            NormalizedName = "MODERATOR"
-                        },
-                        new
-                        {
-                            Id = "f1de4cb5-7f7c-4ba9-9453-22ec3840984b",
-                            Name = "ContentProvider",
-                            NormalizedName = "CONTENTPROVIDER"
-                        },
-                        new
-                        {
-                            Id = "2281c643-65a2-4fd6-83bc-ae240794b875",
-                            Name = "PremiumUser",
-                            NormalizedName = "PREMIUMUSER"
-                        },
-                        new
-                        {
-                            Id = "fcd4a4b5-d492-4290-8c45-8c94b7f8d689",
-                            Name = "RegularUser",
-                            NormalizedName = "REGULARUSER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -422,58 +393,6 @@ namespace WonderingBookApi.Data.Migrations
                     b.HasKey("TopicId");
 
                     b.ToTable("Topics");
-
-                    b.HasData(
-                        new
-                        {
-                            TopicId = 1,
-                            TopicName = "habit"
-                        },
-                        new
-                        {
-                            TopicId = 2,
-                            TopicName = "productivity"
-                        },
-                        new
-                        {
-                            TopicId = 3,
-                            TopicName = "mindfulness"
-                        },
-                        new
-                        {
-                            TopicId = 4,
-                            TopicName = "motivation"
-                        },
-                        new
-                        {
-                            TopicId = 5,
-                            TopicName = "personal-development"
-                        },
-                        new
-                        {
-                            TopicId = 6,
-                            TopicName = "success"
-                        },
-                        new
-                        {
-                            TopicId = 7,
-                            TopicName = "growth"
-                        },
-                        new
-                        {
-                            TopicId = 8,
-                            TopicName = "learning"
-                        },
-                        new
-                        {
-                            TopicId = 9,
-                            TopicName = "inspiration"
-                        },
-                        new
-                        {
-                            TopicId = 10,
-                            TopicName = "wellness"
-                        });
                 });
 
             modelBuilder.Entity("WonderingBookApi.Models.User", b =>
