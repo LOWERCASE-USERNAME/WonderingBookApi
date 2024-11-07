@@ -7,6 +7,8 @@ namespace WonderingBookApi.Utilities
         Draft,
         Pending, 
         Published,
+        NotApproved,
         Archived
+        
     }
 }

@@ -40,6 +40,7 @@ namespace WonderingBookApi.Services.Implementation
                 var roles = await _userManager.GetRolesAsync(user);
                 userDtos.Add(new ListUserDTO
                 {
+                    Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
                     Status = user.Status,
