@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WonderingBookApi.Data;
 
@@ -11,9 +12,11 @@ using WonderingBookApi.Data;
 namespace WonderingBookApi.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241106165016_SeedUserAndUserRole")]
+    partial class SeedUserAndUserRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -569,9 +572,6 @@ namespace WonderingBookApi.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -602,14 +602,13 @@ namespace WonderingBookApi.Data.Migrations
                             EmailConfirmed = false,
                             Fullname = "Tran Duc Hung (K17 HL)",
                             IsAdmin = true,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8607),
+                            LastActiveAt = new DateTime(2024, 11, 6, 23, 50, 15, 507, DateTimeKind.Local).AddTicks(6966),
                             LockoutEnabled = false,
                             ModifiedAt = new DateTime(2024, 10, 24, 5, 14, 16, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "HUNGTDHE171201@FPT.EDU.VN",
                             NormalizedUserName = "HUNGTDHE171201",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "S75KO3CFMZXMHCVSWCS4T6JY3IEZO4LD",
-                            Status = 0,
                             TwoFactorEnabled = false,
                             UserName = "hungtdhe171201"
                         },
@@ -623,14 +622,13 @@ namespace WonderingBookApi.Data.Migrations
                             EmailConfirmed = false,
                             Fullname = "17 Tran Hoang Giang K17",
                             IsAdmin = true,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8633),
+                            LastActiveAt = new DateTime(2024, 11, 6, 23, 50, 15, 507, DateTimeKind.Local).AddTicks(6981),
                             LockoutEnabled = false,
                             ModifiedAt = new DateTime(2024, 10, 25, 13, 41, 1, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "GIANGTHHE170978@FPT.EDU.VN",
                             NormalizedUserName = "GIANGTHHE170978",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "QVQX4RBEDDPFMPWUJYH45JH7YJFFTAOS",
-                            Status = 0,
                             TwoFactorEnabled = false,
                             UserName = "giangthhe170978"
                         },
@@ -644,7 +642,7 @@ namespace WonderingBookApi.Data.Migrations
                             EmailConfirmed = false,
                             Fullname = "Bùi Gia Khánh",
                             IsAdmin = false,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8643),
+                            LastActiveAt = new DateTime(2024, 11, 6, 23, 50, 15, 507, DateTimeKind.Local).AddTicks(6990),
                             LockoutEnabled = false,
                             ModifiedAt = new DateTime(2024, 10, 23, 1, 57, 10, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "KHANHGIAHAIKA3@GMAIL.COM",
@@ -652,7 +650,6 @@ namespace WonderingBookApi.Data.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOInVfBvutBd8S8U2Ck8h2U3RHdD4EcHixqFx4djMr/io5hJ2kHThCmZ4R+gyZZWQw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "5LVH7X6TASZOU4LISF6OD32DCGAIE52J",
-                            Status = 0,
                             TwoFactorEnabled = false,
                             UserName = "khanhgiahaika3"
                         },
@@ -666,7 +663,7 @@ namespace WonderingBookApi.Data.Migrations
                             EmailConfirmed = false,
                             Fullname = "Trần Quyết Chiến",
                             IsAdmin = false,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8653),
+                            LastActiveAt = new DateTime(2024, 11, 6, 23, 50, 15, 507, DateTimeKind.Local).AddTicks(7003),
                             LockoutEnabled = false,
                             ModifiedAt = new DateTime(2024, 10, 26, 13, 56, 56, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "CHIENQUETSTHANG@GMAIL.COM",
@@ -674,7 +671,6 @@ namespace WonderingBookApi.Data.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAECxtILI8M8NNbIKk1SARv2l8niXqUXeHAjdd+U6s3Z88PI671uQL0vCJdgOhACDgBQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "FQ3GKA3ESFQ65WY6COZSY2NUNMJBJJCK",
-                            Status = 0,
                             TwoFactorEnabled = false,
                             UserName = "chienquyetsthang"
                         },
@@ -688,7 +684,7 @@ namespace WonderingBookApi.Data.Migrations
                             EmailConfirmed = false,
                             Fullname = "Trần Huy Hoàng",
                             IsAdmin = false,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8663),
+                            LastActiveAt = new DateTime(2024, 11, 6, 23, 50, 15, 507, DateTimeKind.Local).AddTicks(7013),
                             LockoutEnabled = false,
                             ModifiedAt = new DateTime(2024, 10, 22, 14, 45, 19, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "HOANGTRAN8386@GMAIL.COM",
@@ -696,7 +692,6 @@ namespace WonderingBookApi.Data.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEJCRqT2rhrpnh0B7xqxFZTFijjbXl/4i3/jQKkrr6uyIdYcLk67oAUdRmOvmkUdBnw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "JFIALES6WXZYQRDRMSS4CUBPEM2ALTXJ",
-                            Status = 0,
                             TwoFactorEnabled = false,
                             UserName = "hoangtran8386"
                         },
@@ -710,7 +705,7 @@ namespace WonderingBookApi.Data.Migrations
                             EmailConfirmed = true,
                             Fullname = "Hoàng Huy Tuấn",
                             IsAdmin = false,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8674),
+                            LastActiveAt = new DateTime(2024, 11, 6, 23, 50, 15, 507, DateTimeKind.Local).AddTicks(7023),
                             LockoutEnabled = false,
                             ModifiedAt = new DateTime(2024, 10, 21, 3, 32, 47, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "TUANHOANG333@GMAIL.COM",
@@ -718,7 +713,6 @@ namespace WonderingBookApi.Data.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEIRCZ/X2WM79M5kVq9c3L15pZrEvN/TTUEQ+H++Wd+gNuewMropdS1BJ47imojZR+Q==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "M5WLBKZOVBWHW2VWBW7IVYOPTFM7UIJR",
-                            Status = 0,
                             TwoFactorEnabled = false,
                             UserName = "tuanhoang333"
                         });

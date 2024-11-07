@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WonderingBookApi.Data;
 
@@ -11,9 +12,11 @@ using WonderingBookApi.Data;
 namespace WonderingBookApi.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241106154909_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,38 +169,6 @@ namespace WonderingBookApi.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "7a9df144-5fe3-4adb-b60c-0e309df83bd7",
-                            RoleId = "1bfa4d50-b885-48b9-835a-f47ad854046b"
-                        },
-                        new
-                        {
-                            UserId = "4b0fe916-d76e-4182-a447-4893480c6b4c",
-                            RoleId = "1bfa4d50-b885-48b9-835a-f47ad854046b"
-                        },
-                        new
-                        {
-                            UserId = "3d006212-a50c-45d5-9368-b8d3c0548de3",
-                            RoleId = "03482d4b-c825-4ae8-a1f1-26e98f3b8a5b"
-                        },
-                        new
-                        {
-                            UserId = "3bf051e7-cc4b-4b46-bff6-b3c982e51ecd",
-                            RoleId = "f1de4cb5-7f7c-4ba9-9453-22ec3840984b"
-                        },
-                        new
-                        {
-                            UserId = "41d26d4e-d471-4e9c-b1fc-8b01e73218b3",
-                            RoleId = "2281c643-65a2-4fd6-83bc-ae240794b875"
-                        },
-                        new
-                        {
-                            UserId = "3fc33030-5b15-481a-9ca6-ebb458b0e08c",
-                            RoleId = "fcd4a4b5-d492-4290-8c45-8c94b7f8d689"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -569,9 +540,6 @@ namespace WonderingBookApi.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -590,138 +558,6 @@ namespace WonderingBookApi.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "7a9df144-5fe3-4adb-b60c-0e309df83bd7",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "7b21a2d8-976f-4ce8-8c81-c9a9578faace",
-                            CreatedAt = new DateTime(2024, 10, 24, 5, 14, 16, 0, DateTimeKind.Unspecified),
-                            Email = "hungtdhe171201@fpt.edu.vn",
-                            EmailConfirmed = false,
-                            Fullname = "Tran Duc Hung (K17 HL)",
-                            IsAdmin = true,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8607),
-                            LockoutEnabled = false,
-                            ModifiedAt = new DateTime(2024, 10, 24, 5, 14, 16, 0, DateTimeKind.Unspecified),
-                            NormalizedEmail = "HUNGTDHE171201@FPT.EDU.VN",
-                            NormalizedUserName = "HUNGTDHE171201",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "S75KO3CFMZXMHCVSWCS4T6JY3IEZO4LD",
-                            Status = 0,
-                            TwoFactorEnabled = false,
-                            UserName = "hungtdhe171201"
-                        },
-                        new
-                        {
-                            Id = "4b0fe916-d76e-4182-a447-4893480c6b4c",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "8da8cab1-ee6d-4d24-9984-001ef8139ea3",
-                            CreatedAt = new DateTime(2024, 10, 25, 13, 41, 1, 0, DateTimeKind.Unspecified),
-                            Email = "giangthhe170978@fpt.edu.vn",
-                            EmailConfirmed = false,
-                            Fullname = "17 Tran Hoang Giang K17",
-                            IsAdmin = true,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8633),
-                            LockoutEnabled = false,
-                            ModifiedAt = new DateTime(2024, 10, 25, 13, 41, 1, 0, DateTimeKind.Unspecified),
-                            NormalizedEmail = "GIANGTHHE170978@FPT.EDU.VN",
-                            NormalizedUserName = "GIANGTHHE170978",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "QVQX4RBEDDPFMPWUJYH45JH7YJFFTAOS",
-                            Status = 0,
-                            TwoFactorEnabled = false,
-                            UserName = "giangthhe170978"
-                        },
-                        new
-                        {
-                            Id = "3d006212-a50c-45d5-9368-b8d3c0548de3",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "17b82427-bb11-458e-a9bd-96bd0f8ce73f",
-                            CreatedAt = new DateTime(2024, 10, 23, 1, 57, 10, 0, DateTimeKind.Unspecified),
-                            Email = "khanhgiahaika3@gmail.com",
-                            EmailConfirmed = false,
-                            Fullname = "Bùi Gia Khánh",
-                            IsAdmin = false,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8643),
-                            LockoutEnabled = false,
-                            ModifiedAt = new DateTime(2024, 10, 23, 1, 57, 10, 0, DateTimeKind.Unspecified),
-                            NormalizedEmail = "KHANHGIAHAIKA3@GMAIL.COM",
-                            NormalizedUserName = "KHANHGIAHAIKA3",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOInVfBvutBd8S8U2Ck8h2U3RHdD4EcHixqFx4djMr/io5hJ2kHThCmZ4R+gyZZWQw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "5LVH7X6TASZOU4LISF6OD32DCGAIE52J",
-                            Status = 0,
-                            TwoFactorEnabled = false,
-                            UserName = "khanhgiahaika3"
-                        },
-                        new
-                        {
-                            Id = "3bf051e7-cc4b-4b46-bff6-b3c982e51ecd",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "0ba16f7a-6406-4dea-b0a2-98252ba9180f",
-                            CreatedAt = new DateTime(2024, 10, 26, 13, 56, 56, 0, DateTimeKind.Unspecified),
-                            Email = "chienquyetsthang@gmail.com",
-                            EmailConfirmed = false,
-                            Fullname = "Trần Quyết Chiến",
-                            IsAdmin = false,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8653),
-                            LockoutEnabled = false,
-                            ModifiedAt = new DateTime(2024, 10, 26, 13, 56, 56, 0, DateTimeKind.Unspecified),
-                            NormalizedEmail = "CHIENQUETSTHANG@GMAIL.COM",
-                            NormalizedUserName = "CHIENQUETSTHANG",
-                            PasswordHash = "AQAAAAIAAYagAAAAECxtILI8M8NNbIKk1SARv2l8niXqUXeHAjdd+U6s3Z88PI671uQL0vCJdgOhACDgBQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "FQ3GKA3ESFQ65WY6COZSY2NUNMJBJJCK",
-                            Status = 0,
-                            TwoFactorEnabled = false,
-                            UserName = "chienquyetsthang"
-                        },
-                        new
-                        {
-                            Id = "41d26d4e-d471-4e9c-b1fc-8b01e73218b3",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "072a38e7-3f28-40a3-b37f-278543217c7f",
-                            CreatedAt = new DateTime(2024, 10, 22, 14, 45, 19, 0, DateTimeKind.Unspecified),
-                            Email = "hoangtran8386@gmail.com",
-                            EmailConfirmed = false,
-                            Fullname = "Trần Huy Hoàng",
-                            IsAdmin = false,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8663),
-                            LockoutEnabled = false,
-                            ModifiedAt = new DateTime(2024, 10, 22, 14, 45, 19, 0, DateTimeKind.Unspecified),
-                            NormalizedEmail = "HOANGTRAN8386@GMAIL.COM",
-                            NormalizedUserName = "HOANGTRAN8386",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJCRqT2rhrpnh0B7xqxFZTFijjbXl/4i3/jQKkrr6uyIdYcLk67oAUdRmOvmkUdBnw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "JFIALES6WXZYQRDRMSS4CUBPEM2ALTXJ",
-                            Status = 0,
-                            TwoFactorEnabled = false,
-                            UserName = "hoangtran8386"
-                        },
-                        new
-                        {
-                            Id = "3fc33030-5b15-481a-9ca6-ebb458b0e08c",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "404ea804-cbb9-4086-8f5a-25a77be98934",
-                            CreatedAt = new DateTime(2024, 10, 21, 3, 32, 31, 0, DateTimeKind.Unspecified),
-                            Email = "tuanhoang333@gmail.com",
-                            EmailConfirmed = true,
-                            Fullname = "Hoàng Huy Tuấn",
-                            IsAdmin = false,
-                            LastActiveAt = new DateTime(2024, 11, 7, 11, 10, 6, 564, DateTimeKind.Local).AddTicks(8674),
-                            LockoutEnabled = false,
-                            ModifiedAt = new DateTime(2024, 10, 21, 3, 32, 47, 0, DateTimeKind.Unspecified),
-                            NormalizedEmail = "TUANHOANG333@GMAIL.COM",
-                            NormalizedUserName = "TUANHOANG333",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIRCZ/X2WM79M5kVq9c3L15pZrEvN/TTUEQ+H++Wd+gNuewMropdS1BJ47imojZR+Q==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "M5WLBKZOVBWHW2VWBW7IVYOPTFM7UIJR",
-                            Status = 0,
-                            TwoFactorEnabled = false,
-                            UserName = "tuanhoang333"
-                        });
                 });
 
             modelBuilder.Entity("WonderingBookApi.Models.Wallet", b =>

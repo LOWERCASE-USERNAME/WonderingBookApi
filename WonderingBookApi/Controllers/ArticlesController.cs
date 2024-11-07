@@ -168,5 +168,74 @@ namespace WonderingBookApi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        // PUT: api/user/publish/{articleId}
+        [HttpPut("publish/{id}")]
+        public async Task<IActionResult> PublishArticle(Guid id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var article = await _articleService.GetArticleByIdAsync(id);
+                if (article == null)
+                    return NotFound();
+                article.Status = User.IsInRole("ContentProvider") ? Utilities.ArticleStatus.Published : Utilities.ArticleStatus.Pending;
+                await _articleService.UpdateArticleAsync(article);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            return NoContent();
+        }
+
+        // PUT: api/user/approve/{articleId}
+        [HttpPut("approve/{id}")]
+        public async Task<IActionResult> ApproveArticle(Guid id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var article = await _articleService.GetArticleByIdAsync(id);
+                if (article == null)
+                    return NotFound();
+                article.Status = Utilities.ArticleStatus.Published;
+                await _articleService.UpdateArticleAsync(article);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            return NoContent();
+        }
+
+        // PUT: api/user/notapprove/{articleId}
+        [HttpPut("notapprove/{id}")]
+        public async Task<IActionResult> NotApproveArticle(Guid id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var article = await _articleService.GetArticleByIdAsync(id);
+                if (article == null)
+                    return NotFound();
+                article.Status = Utilities.ArticleStatus.NotApproved;
+                await _articleService.UpdateArticleAsync(article);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            return NoContent();
+        }
+
+
+
     }
 }

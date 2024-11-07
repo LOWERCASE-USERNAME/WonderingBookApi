@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WonderingBookApi.Utilities;
 
 namespace WonderingBookApi.Models
 {
@@ -15,6 +17,9 @@ namespace WonderingBookApi.Models
         [Column(TypeName = "datetime")]
         public DateTime LastActiveAt { get; set; } = DateTime.Now;
         public bool IsAdmin { get; set; } = false;
+        
+        [Required]
+        public UserStatus? Status { get; set; } = UserStatus.Active;
         // Navigation properties
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<SavedIdea> SavedIdeas { get; set; }
