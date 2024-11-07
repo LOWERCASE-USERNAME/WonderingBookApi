@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WonderingBookApi.Data;
+using WonderingBookApi.DTOs;
 using WonderingBookApi.Models;
 
 namespace WonderingBookApi.Services.Implementation
@@ -8,23 +10,65 @@ namespace WonderingBookApi.Services.Implementation
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
-        public UserService(ApplicationDbContext context) 
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public UserService(ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
-        }
-        public Task<IEnumerable<User>> GetAllUser()
-        {
-            throw new NotImplementedException();
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public Task<User> GetUserById(string id)
+        public async Task<IdentityResult> AssignRoleAsync(User user, string role)
         {
-            throw new NotImplementedException();
+            // Check if the role exists in the database
+            if (!await _roleManager.RoleExistsAsync(role))
+            {
+                return IdentityResult.Failed(new IdentityError { Description = $"Role '{role}' does not exist." });
+            }
+
+            return await _userManager.AddToRoleAsync(user, role);
         }
 
-        public Task UpdateUser(User user)
+
+        public async Task<IEnumerable<ListUserDTO>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            var users = await _userManager.Users.ToListAsync();
+            var userDtos = new List<ListUserDTO>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userDtos.Add(new ListUserDTO
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Status = user.Status,
+                    Fullname = user.Fullname,
+                    Roles = roles.ToList()
+                });
+            }
+            return userDtos;
+        }
+
+        public async Task<EditUserDTO> GetUserByIdAsync(string userId)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u=> u.Id == userId);
+            if (user == null) return null;
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return new EditUserDTO
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                Status = user.Status,
+                Fullname = user.Fullname,
+                Roles = roles.ToList()
+            };
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(User user)
+        {
+            return await _userManager.UpdateAsync(user);
         }
     }
 }

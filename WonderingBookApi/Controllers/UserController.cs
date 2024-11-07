@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using WonderingBookApi.DTOs;
 using WonderingBookApi.Models;
+using WonderingBookApi.Services;
 
 namespace WonderingBookApi.Controllers
 {
@@ -18,15 +19,17 @@ namespace WonderingBookApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IUserService _userService;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<User> _roleManager;
         private readonly IConfiguration _configuration;
-        public UserController(SignInManager<User> signInManager, UserManager<User> userManager, IConfiguration configuration)
+        public UserController(SignInManager<User> signInManager, UserManager<User> userManager, IConfiguration configuration, IUserService userService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _configuration = configuration;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -193,6 +196,23 @@ namespace WonderingBookApi.Controllers
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
         }
     }
 }
