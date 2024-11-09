@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using WonderingBookApi.Utilities;
 
 namespace WonderingBookApi.Models
@@ -21,6 +22,7 @@ namespace WonderingBookApi.Models
         [Required]
         public UserStatus? Status { get; set; } = UserStatus.Active;
         // Navigation properties
+        [JsonIgnore]
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<SavedIdea> SavedIdeas { get; set; }
         public virtual Wallet? Wallet { get; set; }

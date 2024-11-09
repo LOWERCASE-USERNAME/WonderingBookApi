@@ -33,9 +33,40 @@ namespace WonderingBookApi.Services.Implementation
             return article;
         }
 
+        public async Task<List<Article>> GetListArticleByIdAsync(List<Guid> listIds)
+        {
+            var articles = await _context.Articles.Where(a => listIds.Contains(a.ArticleId)).ToListAsync();
+            return articles;
+        }
+
         public async Task<IEnumerable<Article>> GetAllArticlesAsync()
         {
             return await _context.Articles.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Article>> GetAllArticlesExtendedAsync()
+        {
+            return await _context.Articles
+                .Include(a => a.Book)
+                .Include(a => a.IdeaCards)
+                .Include(a => a.User)
+                .ToListAsync();
+        }
+
+        public async Task UpdateArticleBulkAsync(List<Article> updatedArticles)
+        {
+            if (updatedArticles == null || !updatedArticles.Any())
+                throw new ArgumentNullException(nameof(updatedArticles));
+            try
+            {
+                _context.Articles.UpdateRange(updatedArticles);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
 
         public async Task UpdateArticleAsync(Article updatedArticle)

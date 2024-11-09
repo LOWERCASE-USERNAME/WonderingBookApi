@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Google.Apis.Util;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using WonderingBookApi.DTOs.Article;
 using WonderingBookApi.DTOs.Book;
@@ -38,6 +40,14 @@ namespace WonderingBookApi.Controllers
         {
             var articles = await _articleService.GetAllArticlesAsync();
             return Ok(articles);
+        }
+
+        [HttpGet("admin")]
+        public async Task<IActionResult> GetAllArticlesExtended()
+        {
+            var articles = await _articleService.GetAllArticlesExtendedAsync();
+            
+            return Ok(articles.Where(a => a.Status != Utilities.ArticleStatus.Draft));
         }
 
         // GET api/<ArticlesController>/5
@@ -146,6 +156,35 @@ namespace WonderingBookApi.Controllers
                 if (updateArticle.Image != null)
                     article.Image = await _storage.UploadImageAsync(updateArticle.Image, article.ArticleId);
                 await _articleService.UpdateArticleAsync(article);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            return NoContent();
+        }
+
+        [HttpPut("update-status-bulk")]
+        public async Task<IActionResult> UpdateArticleStatusBulk([FromBody] List<UpdateArticleStatusDTO> updateStatusArticles)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var articles = await _articleService.GetListArticleByIdAsync(updateStatusArticles.Select(dto => dto.ArticleId).ToList());
+                if (articles == null || !articles.Any())
+                    return NotFound();
+
+                foreach (var article in articles)
+                {
+                    var statusUpdate = updateStatusArticles.FirstOrDefault(dto => dto.ArticleId == article.ArticleId);
+                    if (statusUpdate != null)
+                    {
+                        article.Status = statusUpdate.Status;
+                    }
+                }
+                await _articleService.UpdateArticleBulkAsync(articles);
             }
             catch (InvalidOperationException ex)
             {
