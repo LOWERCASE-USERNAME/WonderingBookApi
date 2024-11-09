@@ -59,6 +59,7 @@ namespace WonderingBookApi.Services.Implementation
             var roles = await _userManager.GetRolesAsync(user);
             return new EditUserDTO
             {
+                Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
                 Status = user.Status,
