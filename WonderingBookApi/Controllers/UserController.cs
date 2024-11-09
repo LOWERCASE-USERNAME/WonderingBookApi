@@ -121,15 +121,14 @@ namespace WonderingBookApi.Controllers
 
             // Check if the user already exists
             var user = await _userManager.FindByEmailAsync(payload.Email);
-            // Get user roles
-            var roles = await _userManager.GetRolesAsync(user);
+
             if (user != null)
             {
                 // Check if the user is banned
                 if (user.Status == UserStatus.Banned) return Unauthorized("Your account is banned. Please contact support.");
                 // Log the user in
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return Ok(new { message = "Login Successful", token = GenerateJwtToken(user, roles) });
+                return Ok(new { message = "Login Successful", token = GenerateJwtToken(user, await _userManager.GetRolesAsync(user)) });
             }
 
             // If the user doesn't exist, create a new account
@@ -143,10 +142,12 @@ namespace WonderingBookApi.Controllers
             };
 
             var createUserResult = await _userManager.CreateAsync(userToCreate);
+            await _userService.AssignRoleAsync(userToCreate, "RegularUser");
+
             if (createUserResult.Succeeded)
             {
                 await _signInManager.SignInAsync(userToCreate, isPersistent: false);
-                return Ok(new { message = "User created and logged in successfully", token = GenerateJwtToken(userToCreate, roles) });
+                return Ok(new { message = "User created and logged in successfully", token = GenerateJwtToken(userToCreate, await _userManager.GetRolesAsync(userToCreate)) });
             }
 
             return BadRequest(createUserResult.Errors.Select(e => e.Description));

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 using WonderingBookApi.Data;
 using WonderingBookApi.Mapping;
@@ -76,10 +77,7 @@ namespace WonderingBookApi
             //builder.Services.AddDbContext<ApplicationDbContext>(options => 
             //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             // Register Identity services and configure options
-            builder.Services.AddIdentity<User, IdentityRole>()
-                .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            builder.Services.Configure<IdentityOptions>(options =>
+            builder.Services.AddIdentityApiEndpoints<User>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequireDigit = false;
@@ -94,7 +92,10 @@ namespace WonderingBookApi
 
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
-            });
+            })
+                .AddRoles<IdentityRole>()  // Explicitly add roles
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
