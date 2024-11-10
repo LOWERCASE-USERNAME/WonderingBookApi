@@ -1,5 +1,6 @@
 
 using Google.Apis.Auth.OAuth2;
+using Google.Apis.Books.v1.Data;
 using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,12 +9,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
+using System.Configuration;
 using System.Text;
 using WonderingBookApi.Data;
 using WonderingBookApi.Mapping;
 using WonderingBookApi.Models;
 using WonderingBookApi.Services;
 using WonderingBookApi.Services.Implementation;
+using WonderingBookApi.Utilities;
 
 namespace WonderingBookApi
 {
@@ -35,6 +39,10 @@ namespace WonderingBookApi
 
             // Register the storage client for dependency injection
             builder.Services.AddSingleton(storageClient);
+            builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+                ConnectionMultiplexer.Connect(builder.Configuration.GetSection("Redis")["ConnectionString"]));
+
+            builder.Services.AddScoped<IRedisService, RedisService>();
 
             // Add services to the container.
             builder.Services.AddAutoMapper(typeof(BookProfile));
@@ -125,6 +133,7 @@ namespace WonderingBookApi
                 app.UseSwaggerUI();
                 app.UseDeveloperExceptionPage();
             }
+            // app.UseMiddleware<CheckUserStatusMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseRouting();
