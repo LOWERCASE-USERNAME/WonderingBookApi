@@ -46,8 +46,18 @@ namespace WonderingBookApi.Controllers
         public async Task<IActionResult> GetAllArticlesExtended()
         {
             var articles = await _articleService.GetAllArticlesExtendedAsync();
-            
+
             return Ok(articles.Where(a => a.Status != Utilities.ArticleStatus.Draft));
+            //return Ok(articles);
+        }
+
+        [HttpGet("user")]
+        public async Task<IActionResult> GetPublishedArticles()
+        {
+            var articles = await _articleService.GetAllArticlesExtendedAsync();
+
+            return Ok(articles.Where(a => a.Status == Utilities.ArticleStatus.Published));
+            //return Ok(articles);
         }
 
         // GET api/<ArticlesController>/5

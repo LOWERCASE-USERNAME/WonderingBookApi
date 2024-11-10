@@ -1,4 +1,6 @@
-﻿namespace WonderingBookApi.DTOs.Article
+﻿using WonderingBookApi.Utilities;
+
+namespace WonderingBookApi.DTOs.Article
 {
     public class UpdateArticleDTO
     {
@@ -7,5 +9,6 @@
         public string? MiscAuthor { get; set; }
         public IFormFile? Image { get; set; }
         public string? DefaultImage { get; set; }
+        public ArticleStatus? status { get; set; }
     }
 }
