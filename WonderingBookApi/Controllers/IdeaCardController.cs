@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Humanizer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WonderingBookApi.DTOs.IdeaCard;
 using WonderingBookApi.Models;
@@ -17,12 +18,15 @@ namespace WonderingBookApi.Controllers
         private readonly IHandleFirebaseService _handleFirebaseService;
         private readonly IIdeaCardService _ideaCardService;
         private readonly IMapper _mapper;
-
-        public IdeaCardController(IIdeaCardService ideaCardService, IMapper mapper, IHandleFirebaseService handleFirebaseService)
+        private readonly IRedisService _redisService;
+        private readonly UserManager<User> _userManager;
+        public IdeaCardController(IIdeaCardService ideaCardService, IMapper mapper, IHandleFirebaseService handleFirebaseService, IRedisService redisService, UserManager<User> userManager)
         {
             _handleFirebaseService = handleFirebaseService;
             _ideaCardService = ideaCardService;
             _mapper = mapper;
+            _redisService = redisService;
+            _userManager = userManager;
         }
         // GET: api/<IdeaCardController>
         [HttpGet("all")]
@@ -46,6 +50,17 @@ namespace WonderingBookApi.Controllers
         [HttpGet("get-by-article/{articleId}")]
         public async Task<IActionResult> GetCardByArticle(Guid articleId)
         {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (User.IsInRole("RegularUser"))
+            {
+                // Check if the user has exceeded the view limit
+                bool isWithinLimit = await _redisService.IncrementArticleViews(user.Id);
+
+                if (!isWithinLimit)
+                {
+                    return NotFound("Daily article view limit reached.");
+                }
+            }
             // Retrieve the IdeaCard using IdeaCardService
             var ideaCards = await _ideaCardService.GetIdeaCardsByArticleAsync(articleId);
             if (ideaCards == null)
