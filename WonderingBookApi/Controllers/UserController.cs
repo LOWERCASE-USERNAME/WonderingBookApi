@@ -232,7 +232,7 @@ namespace WonderingBookApi.Controllers
         }
 
         // PUT: api/user/status/{userId}/{status}
-        [HttpPut("/status/{userId}/{status}")]
+        [HttpPut("status/{userId}/{status}")]
         public async Task<IActionResult> UpdateStatus(string userId, UserStatus status)
         {
             var user = await _userManager.FindByIdAsync(userId);
